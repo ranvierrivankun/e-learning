@@ -50,9 +50,15 @@
   </li>
   <li class="mb-2">
    <div class="d-flex align-items-center">
-    <i class="fa-solid fa-phone mr-3"></i>
-    <p class="mb-0"><?= $getDataSiswa->notelp_siswa ?></p>   
+    <i class="fa-solid fa-users-rectangle mr-3"></i>
+    <p class="mb-0"><?= $getDataSiswa->nama_kelas ?> - <?= $getDataSiswa->nama_kejuruan ?></p>   
   </div>
+</li>
+<li class="mb-2">
+ <div class="d-flex align-items-center">
+  <i class="fa-solid fa-phone mr-3"></i>
+  <p class="mb-0"><?= $getDataSiswa->notelp_siswa ?></p>   
+</div>
 </li>
 <li>
  <div class="d-flex align-items-center">
@@ -121,18 +127,18 @@
       <li class="mb-4">
        <div class="form-group">
         <label for="exampleInputText1">Email</label>
-          <input type="email" class="form-control" name="email_siswa" value="" placeholder="<?= $getDataSiswa->email_siswa ?>">
-        </div>
-      </li>
-
-      <li class="mb-4">
-       <div class="form-group">
-        <label for="exampleInputText1">Ganti Foto <strong>Maks 5MB (jpg,jpeg,png)</strong></label>
-        <input type="file" class="form-control-file" name="foto">
+        <input type="email" class="form-control" name="email_siswa" value="" placeholder="<?= $getDataSiswa->email_siswa ?>">
       </div>
     </li>
 
-  </ul>
+    <li class="mb-4">
+     <div class="form-group">
+      <label for="exampleInputText1">Ganti Foto <strong>Maks 5MB (jpg,jpeg,png)</strong></label>
+      <input type="file" class="form-control-file" name="foto">
+    </div>
+  </li>
+
+</ul>
 </div>
 </div>
 </div>

@@ -17,7 +17,7 @@ class Profile extends CI_Controller
 		/*Title*/
 		$pengaturan				= $this->db->select('*')->from('pengaturan')->get()->row();
 		$id_siswa				= userdata('id_siswa');
-		$getDataSiswa			= $this->db->select('*')->from('data_siswa')->where('id_siswa', $id_siswa)->get()->row();
+		$getDataSiswa			= $this->db->select('*')->from('data_siswa')->where('id_siswa', $id_siswa)->join('data_kelas','id_kelas=kelas')->join('data_kejuruan','id_kejuruan=kejuruan')->get()->row();
 		$data['getDataSiswa'] 	= $getDataSiswa;
 		$data['title']			= 'Profile '.$pengaturan->nama_sekolah;
 

@@ -1,3 +1,8 @@
+<?php
+$id_kelas = userdata('kelas');
+$query = $this->db->select('*')->from('data_kelas')->join('data_kejuruan','id_kejuruan=kejuruan')->where('id_kelas',$id_kelas)->get()->row();
+?>
+
 <div class="iq-top-navbar">
   <div class="iq-navbar-custom">
     <nav class="navbar navbar-expand-lg navbar-light p-0">
@@ -9,7 +14,7 @@
         </a>
       </div>
       <div class="navbar-breadcrumb">
-        <h5>E-LEARNING</h5>
+        <h5>E-LEARNING <a class="font-italic"><?= $query->nama_kelas ?> - <?= $query->nama_kejuruan ?></a></h5>
       </div>
       <div class="d-flex align-items-center">
 
