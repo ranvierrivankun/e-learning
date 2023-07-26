@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Data_materi_model extends CI_Model
 {
 
-	public function table_data_materi()
+	public function table_data_materi($id_mapel,$id_kelas)
 	{
 		$awal 	= $this->input->post('length');
 		$akhir 	= $this->input->post('start');
@@ -41,13 +41,15 @@ class Data_materi_model extends CI_Model
 		$this->db->join('data_kejuruan','id_kejuruan=kejuruan');
 		$this->db->join('data_hari','id_hari=hari');
 		$this->db->join('data_staff','id_staff=pengajar');
+		$this->db->where('jadpel_mapel', $id_mapel);
+		$this->db->where('jadpel_kelas', $id_kelas);
 		$this->db->order_by('tgl_materi', 'DESC');
 		$batas;
 		return $this->db->get()->result();
 		
 	}
 
-	public function filter_table_data_materi()
+	public function filter_table_data_materi($id_mapel,$id_kelas)
 	{
 		$awal 	= $this->input->post('length');
 		$akhir 	= $this->input->post('start');
@@ -78,12 +80,14 @@ class Data_materi_model extends CI_Model
 		$this->db->join('data_kejuruan','id_kejuruan=kejuruan');
 		$this->db->join('data_hari','id_hari=hari');
 		$this->db->join('data_staff','id_staff=pengajar');
+		$this->db->where('jadpel_mapel', $id_mapel);
+		$this->db->where('jadpel_kelas', $id_kelas);
 		$this->db->order_by('tgl_materi', 'DESC');
 		return $this->db->get()->num_rows();
 
 	}
 
-	public function total_table_data_materi()
+	public function total_table_data_materi($id_mapel,$id_kelas)
 	{
 		$sv = strtolower($_POST['search']['value']);
 
@@ -111,6 +115,8 @@ class Data_materi_model extends CI_Model
 		$this->db->join('data_kejuruan','id_kejuruan=kejuruan');
 		$this->db->join('data_hari','id_hari=hari');
 		$this->db->join('data_staff','id_staff=pengajar');
+		$this->db->where('jadpel_mapel', $id_mapel);
+		$this->db->where('jadpel_kelas', $id_kelas);
 		$this->db->order_by('tgl_materi', 'DESC');
 		return $this->db->get()->num_rows();
 

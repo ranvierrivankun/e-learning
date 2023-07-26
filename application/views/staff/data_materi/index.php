@@ -10,11 +10,15 @@
                         <div class="header-title">
                            <h4 class="card-title mb-1">Data Materi <?= $where->nama_mapel ?></h4>
                            <h5 class="font-italic"><?= $where->nama_kelas ?> - <?= $where->nama_kejuruan ?></h5>
+                           <span class="badge badge-pill badge-light"><?= $where->nama_hari ?></span>
+                           <span class="badge badge-pill badge-primary"><?= $where->waktu_mulai ?> - <?= $where->waktu_selesai ?></span>
                         </div>
                      </div>
                      <div class="card-body">
 
                         <input type="hidden" id="id_jadpel" value="<?= $where->id_jadpel; ?>"></input>
+                        <input type="hidden" id="id_mapel" value="<?= $where->jadpel_mapel; ?>"></input>
+                        <input type="hidden" id="id_kelas" value="<?= $where->jadpel_kelas; ?>"></input>
 
                         <div class="row">
 
@@ -64,7 +68,8 @@
 
   $(document).ready(function() {
 
-   var id_jadpel = $('#id_jadpel').val();
+   var id_mapel = $('#id_mapel').val();
+   var id_kelas = $('#id_kelas').val();
 
    var table_data_materi = $('#table_data_materi').DataTable({ 
     destroy: true,
@@ -77,7 +82,8 @@
       url: "<?= site_url('Jadwal_mengajar/table_data_materi')?>",
       method: "POST",
       data: {
-         id_jadpel: id_jadpel,
+         id_mapel: id_mapel,
+         id_kelas: id_kelas,
       }
    },
    "language": {

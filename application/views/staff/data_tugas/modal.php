@@ -100,7 +100,7 @@
    {
       Swal.fire({
          title: 'Delete',
-         text: "Menghapus Data Tugas akan menghapus juga data upload tugas siswa. Anda yakin?",
+         text: "Menghapus Data Tugas akan menghapus juga data upload tugas murid. Anda yakin?",
          icon: 'question',
          showCancelButton: true,
          confirmButtonColor: '#d33',

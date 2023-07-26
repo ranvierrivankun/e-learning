@@ -12,6 +12,8 @@ class Jadwal_mengajar extends CI_Controller
 		$this->load->model('Data_materi_model', 'data_materi');
 		$this->load->model('Data_tugas_model', 'data_tugas');
 		$this->load->model('Data_upload_model', 'data_upload');
+		$this->load->model('Data_absen_model', 'data_absen');
+		$this->load->model('Data_absensi_model', 'data_absensi');
 		cek_login_staff();
 	}
 
@@ -48,7 +50,10 @@ class Jadwal_mengajar extends CI_Controller
 			$data_tugas = "<a class='mt-2 badge badge-success' href='Jadwal_mengajar/data_tugas/$tb->id_jadpel'>Data Tugas
 			</a>&nbsp;";
 
-			$td[] = "<center><div class='btn-group'>$data_materi $data_tugas</a></center>";
+			$data_absen = "<a class='mt-2 badge badge-light' href='Jadwal_mengajar/data_absen/$tb->id_jadpel'>Data Absen
+			</a>&nbsp;";
+
+			$td[] = "<center><div class='btn-group'>$data_materi $data_tugas $data_absen</a></center>";
 			$td[] = $tb->nama_mapel;
 			$td[] = $tb->nama_kelas.' - '.$tb->nama_kejuruan;
 			$td[] = $tb->nama_hari.' / '.$tb->waktu_mulai.' - '.$tb->waktu_selesai;
@@ -73,7 +78,7 @@ class Jadwal_mengajar extends CI_Controller
 		$data['title']			= 'Data Materi '.$pengaturan->nama_sekolah;
 
 		/*Id_jadpel*/
-		$where				= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel)->join('data_mapel','id_mapel=jadpel_mapel')->join('data_kelas','id_kelas=jadpel_kelas')->join('data_kejuruan','id_kejuruan=kejuruan')->get()->row();
+		$where				= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel)->join('data_mapel','id_mapel=jadpel_mapel')->join('data_kelas','id_kelas=jadpel_kelas')->join('data_kejuruan','id_kejuruan=kejuruan')->join('data_hari','id_hari=hari')->get()->row();
 		$data['where'] 		= $where;
 
 		$this->load->view('template_staff/header', $data);
@@ -87,9 +92,12 @@ class Jadwal_mengajar extends CI_Controller
 	/*Table Data Materi*/
 	public function table_data_materi()
 	{
-		$table 	= $this->data_materi->table_data_materi();
-		$filter = $this->data_materi->filter_table_data_materi();
-		$total 	= $this->data_materi->total_table_data_materi();
+		$id_mapel 			= $this->input->post('id_mapel');
+		$id_kelas 			= $this->input->post('id_kelas');
+
+		$table 	= $this->data_materi->table_data_materi($id_mapel,$id_kelas);
+		$filter = $this->data_materi->filter_table_data_materi($id_mapel,$id_kelas);
+		$total 	= $this->data_materi->total_table_data_materi($id_mapel,$id_kelas);
 
 		$data 	= [];
 
@@ -235,7 +243,7 @@ class Jadwal_mengajar extends CI_Controller
 		$data['title']			= 'Data Tugas '.$pengaturan->nama_sekolah;
 
 		/*Id_jadpel*/
-		$where				= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel)->join('data_mapel','id_mapel=jadpel_mapel')->join('data_kelas','id_kelas=jadpel_kelas')->join('data_kejuruan','id_kejuruan=kejuruan')->get()->row();
+		$where				= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel)->join('data_mapel','id_mapel=jadpel_mapel')->join('data_kelas','id_kelas=jadpel_kelas')->join('data_kejuruan','id_kejuruan=kejuruan')->join('data_hari','id_hari=hari')->get()->row();
 		$data['where'] 		= $where;
 
 		$this->load->view('template_staff/header', $data);
@@ -249,9 +257,12 @@ class Jadwal_mengajar extends CI_Controller
 	/*Table Data Tugas*/
 	public function table_data_tugas()
 	{
-		$table 	= $this->data_tugas->table_data_tugas();
-		$filter = $this->data_tugas->filter_table_data_tugas();
-		$total 	= $this->data_tugas->total_table_data_tugas();
+		$id_mapel 			= $this->input->post('id_mapel');
+		$id_kelas 			= $this->input->post('id_kelas');
+
+		$table 	= $this->data_tugas->table_data_tugas($id_mapel,$id_kelas);
+		$filter = $this->data_tugas->filter_table_data_tugas($id_mapel,$id_kelas);
+		$total 	= $this->data_tugas->total_table_data_tugas($id_mapel,$id_kelas);
 
 		$data 	= [];
 
@@ -460,7 +471,15 @@ class Jadwal_mengajar extends CI_Controller
 			$td[] = $tb->nama_siswa;
 			$td[] = $link_tugas;
 			$td[] = $tb->tgl_tugas_selesai;
-			$td[] = $tb->nilai_tugas;
+
+			$ifelse="";
+			if ($tb->status_tugas_selesai === 'proses') {
+				$td[] = $tb->nilai_tugas;
+			} else {
+				$td[] = "<a target='_blank' class='mt-2 badge badge-warning'>$tb->nilai_tugas
+				</a>";
+			};
+			
 			$td[] = $tb->catatan_tugas;
 
 			$data[] = $td;
@@ -520,14 +539,255 @@ class Jadwal_mengajar extends CI_Controller
 		$id_tugas_selesai 		= $this->input->post('id_tugas_selesai');
 		$nilai_tugas 			= $this->input->post('nilai_tugas');
 		$catatan_tugas 			= $this->input->post('catatan_tugas');
-		$pengajar_tugas_selesai = staffdata('id_staff');
 
 		$data['nilai_tugas']			= $nilai_tugas;
 		$data['catatan_tugas']			= $catatan_tugas;
-		$data['pengajar_tugas_selesai']	= $pengajar_tugas_selesai;
 
 		$update 			= $this->bd->update('data_tugas_selesai', $data, 'id_tugas_selesai', $id_tugas_selesai);
 		$output['status'] 	= true;
+		$this->output->set_content_type('application/json')->set_output(json_encode($output));
+	}
+
+	/*View Data Absen*/
+	public function data_absen($id_jadpel)
+	{
+		/*Title*/
+		$pengaturan				= $this->db->select('*')->from('pengaturan')->get()->row();
+		$data['title']			= 'Data Absen '.$pengaturan->nama_sekolah;
+
+		/*Id_jadpel*/
+		$where				= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel)->join('data_mapel','id_mapel=jadpel_mapel')->join('data_kelas','id_kelas=jadpel_kelas')->join('data_kejuruan','id_kejuruan=kejuruan')->join('data_hari','id_hari=hari')->get()->row();
+		$data['where'] 		= $where;
+
+		/*Id Mapel & Id Kelas*/
+		$id_mapel = $where->jadpel_mapel;
+		$id_kelas = $where->jadpel_kelas;
+
+		$where2				= $this->db->select('*')->from('data_jadpel')->where('jadpel_mapel', $id_mapel)->where('jadpel_kelas', $id_kelas)->get()->row();
+		$data['where2'] 		= $where2;
+
+		$this->load->view('template_staff/header', $data);
+		$this->load->view('template_staff/navbar');
+		$this->load->view('template_staff/sidebar');
+		$this->load->view('staff/data_absen/index');
+		$this->load->view('staff/data_absen/modal');
+		$this->load->view('template_staff/footer');
+	}
+
+	/*Table Data Absen*/
+	public function table_data_absen()
+	{
+		$id_mapel 			= $this->input->post('id_mapel');
+		$id_kelas 			= $this->input->post('id_kelas');
+		
+		$table 	= $this->data_absen->table_data_absen($id_mapel,$id_kelas);
+		$filter = $this->data_absen->filter_table_data_absen($id_mapel,$id_kelas);
+		$total 	= $this->data_absen->total_table_data_absen($id_mapel,$id_kelas);
+
+		$data 	= [];
+
+		foreach ($table as $tb) {
+			$td = [];
+
+			$data_absensi = "<a class='btn text-dark' href='".base_url('/')."Jadwal_mengajar/data_absensi/$tb->id_absen'>
+			<i class='fa-solid fa-users'></i>
+			</a>&nbsp;";
+
+			$edit = "<a class='btn text-dark edit' data-id_absen='$tb->id_absen'>
+			<i class='fa-solid fa-pen-to-square'></i>
+			</a>";
+
+			$delete = "<a class='btn text-danger' href='javascript:void(0)' onclick='delete_data($tb->id_absen)''>
+			<i class='fa-solid fa-delete-left'></i>
+			</a>";
+
+			$td[] = "<center><div class='btn-group'>$data_absensi $edit $delete</a></center>";
+			$td[] = 'Pertemuan '.$tb->judul_absen;
+			$td[] = $tb->tgl_absen;
+			$td[] = $tb->waktu_mulai;
+			$td[] = $tb->waktu_selesai;
+
+			$data[] = $td;
+		}
+
+		$output = [
+			'draw' => $this->input->post('draw'),
+			'recordsTotal' => $total,
+			'recordsFiltered' => $filter,
+			'data'=> $data,
+		];
+		$this->output->set_content_type('application/json')->set_output(json_encode($output));
+	}
+
+	/*Modal Tambah Data Absen*/
+	public function modal_tambah_data_absen()
+	{
+		/*Id_jadpel*/
+		$id_jadpel 			= $this->input->post('id_jadpel');
+		$where				= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel)->get()->row();
+		$data['where'] 		= $where;
+
+		$this->load->view('staff/data_absen/modal_tambah_data_absen', $data, FALSE);
+	}
+
+	/*Proses Tambah Data Absen*/
+	public function proses_tambah_data_absen()
+	{
+		$id_jadpel_absen 		= $this->input->post('id_jadpel_absen');
+		$judul_absen 			= $this->input->post('judul_absen');
+		$tgl_absen 				= $this->input->post('tgl_absen');
+		$user_absen 			= staffdata('id_staff');
+
+		/*Generate id_absen*/
+		$query   	= $this->db->select_max('id_absen')->from('data_absen')->get()->row_array();
+		$urutan    	= $query['id_absen'];
+		$urutan++;
+		$id_absen 	= $urutan;
+
+		$data['id_absen']			= $id_absen;
+		$data['id_jadpel_absen']	= $id_jadpel_absen;
+		$data['judul_absen']		= $judul_absen;
+		$data['tgl_absen']			= $tgl_absen;
+		$data['user_absen']			= $user_absen;
+
+		/*Query Data Mapel*/
+		$query 			= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel_absen)->join('data_mapel','id_mapel=jadpel_mapel')->join('data_kelas','id_kelas=jadpel_kelas')->get()->row();
+		$id_mapel 		= $query->id_mapel;
+		$id_kelas 		= $query->id_kelas;
+
+		/*Ambil data siswa berdasarkan kelas*/
+		$this->db->where('kelas', $id_kelas);
+		$query = $this->db->get('data_siswa');
+		$siswa_data = $query->result_array();
+
+		/*Buat data absensi untuk setiap siswa*/
+		$absensi_data = array();
+		foreach ($siswa_data as $siswa) {
+			$absensi_data[] = array(
+				'user_absen_murid' => $siswa['id_siswa'],
+				'absen' => $id_absen,
+				'tgl_absen_murid' => $tgl_absen,
+				'mapel_absen_murid' => $id_mapel,
+				'status_absen_murid' => 'nonaktif'
+			);
+		}
+
+		/*Insert Data Absen*/
+		$save = $this->bd->save('data_absen', $data);
+
+		/*Update absen di Jadpel menjadi aktif*/
+		$update_jadpel['absen']	= 'aktif';
+		$update = $this->db->set($update_jadpel)->where('jadpel_mapel', $id_mapel)->where('jadpel_kelas', $id_kelas)->update('data_jadpel');
+
+		/*Insert Data Absensi Murid*/
+		$this->db->insert_batch('data_absen_murid', $absensi_data);
+
+		$output['status'] 	= true;
+		$this->output->set_content_type('application/json')->set_output(json_encode($output));
+	}
+
+	/*Modal Edit Data Absen*/
+	public function modal_edit_data_absen()
+	{
+		$id_absen 	= $this->input->post('id_absen');
+		$edit 		= $this->db->select('*')->from('data_absen')->where('id_absen', $id_absen)->join('data_jadpel','id_jadpel=id_jadpel_absen')->get()->row();
+
+		$data['edit'] 	= $edit;
+		$this->load->view('staff/data_absen/modal_edit_data_absen', $data, FALSE);
+	}
+
+	/*Proses Edit Data Absen*/
+	public function proses_edit_data_absen()
+	{
+		$id_absen 		= $this->input->post('id_absen');
+		$judul_absen 	= $this->input->post('judul_absen');
+		$tgl_absen 		= $this->input->post('tgl_absen');
+
+		$data['id_absen']		= $id_absen;
+		$data['judul_absen']	= $judul_absen;
+		$data['tgl_absen']		= $tgl_absen;
+
+		$update 			= $this->bd->update('data_absen', $data, 'id_absen', $id_absen);
+		$output['status'] 	= true;
+		$this->output->set_content_type('application/json')->set_output(json_encode($output));
+	}
+
+	/*Tutup Data Absen*/
+	public function tutup_data_absen()
+	{
+		if ($this->input->is_ajax_request() == true) {
+			/*$id_jadpel 		= $this->input->post('id_jadpel',true);*/
+			$id_mapel 		= $this->input->post('id_mapel',true);
+			$id_kelas 		= $this->input->post('id_kelas',true);
+
+			/*Update absen di Jadpel menjadi nonaktif*/
+			$update_jadpel['absen']	= 'nonaktif';
+
+			$this->db->set($update_jadpel);
+			$this->db->where('jadpel_mapel', $id_mapel);
+			$this->db->where('jadpel_kelas', $id_kelas);
+			$this->db->update('data_jadpel');
+
+			$msg = [ 'sukses' => 'Absen Berhasil ditutup!' ];
+			echo json_encode($msg);
+		}
+	}
+
+	/*View Data Absensi*/
+	public function data_absensi($id_absen)
+	{
+		/*Title*/
+		$pengaturan				= $this->db->select('*')->from('pengaturan')->get()->row();
+		$data['title']			= 'Data Absensi '.$pengaturan->nama_sekolah;
+
+		/*Id_jadpel*/
+		$where				= $this->db->select('*')->from('data_absen')->where('id_absen', $id_absen)->join('data_jadpel','id_jadpel=id_jadpel_absen')->join('data_mapel','id_mapel=jadpel_mapel')->join('data_kelas','id_kelas=jadpel_kelas')->join('data_kejuruan','id_kejuruan=kejuruan')->join('data_hari','id_hari=hari')->get()->row();
+		$data['where'] 		= $where;
+
+		$this->load->view('template_staff/header', $data);
+		$this->load->view('template_staff/navbar');
+		$this->load->view('template_staff/sidebar');
+		$this->load->view('staff/data_absensi/index');
+		$this->load->view('staff/data_absensi/modal');
+		$this->load->view('template_staff/footer');
+	}
+
+	/*Table Data Absensi*/
+	public function table_data_absensi()
+	{
+		$id_absen 			= $this->input->post('id_absen');
+
+		$table 	= $this->data_absensi->table_data_absensi($id_absen);
+		$filter = $this->data_absensi->filter_table_data_absensi($id_absen);
+		$total 	= $this->data_absensi->total_table_data_absensi($id_absen);
+
+		$data 	= [];
+
+		foreach ($table as $tb) {
+			$td = [];
+
+			$td[] = $tb->nisn;
+			$td[] = $tb->nama_siswa;
+			$td[] = $tb->jk_siswa;
+
+			$ifelse="";
+			if ($tb->status_absen_murid == 'nonaktif' ) {
+				$td[] = "<a class='mt-2 badge badge-danger'>Belum Absen</a>&nbsp;";
+			} else {
+				$td[] = "<a class='mt-2 badge badge-primary'>Sudah Absen</a>&nbsp;";
+			};
+
+			$td[] = $tb->waktu_absen_murid;
+
+			$data[] = $td;
+		}
+
+		$output = [
+			'draw' => $this->input->post('draw'),
+			'recordsTotal' => $total,
+			'recordsFiltered' => $filter,
+			'data'=> $data,
+		];
 		$this->output->set_content_type('application/json')->set_output(json_encode($output));
 	}
 
@@ -566,6 +826,27 @@ class Jadwal_mengajar extends CI_Controller
 
 			$msg = [ 'sukses' => 'Data Tugas Berhasil Dihapus' ];
 			echo json_encode($msg);
+		}
+	}
+
+	/*Delete Data Absen*/
+	public function delete_data_absen()
+	{
+		if ($this->input->is_ajax_request() == true) {
+			$id_absen 		= $this->input->post('id',true);
+
+			/*Update absen di Jadpel menjadi nonaktif*/
+			$query 					= $this->db->select('*')->from('data_absen')->where('id_absen', $id_absen)->get()->row();
+			$id_jadpel_absen 		= $query->id_jadpel_absen;
+			$update_jadpel['absen']	= 'nonaktif';
+			$update = $this->bd->update('data_jadpel', $update_jadpel, 'id_jadpel', $id_jadpel_absen);
+
+			$this->bd->delete('data_absen','id_absen', $id_absen);
+			$this->bd->delete('data_absen_murid','absen', $id_absen);
+			$msg = [ 'sukses' => 'Data Absen Berhasil Dihapus' ];
+			echo json_encode($msg);
+
+
 		}
 	}
 

@@ -81,6 +81,7 @@ class Data_jadpel extends CI_Controller
 		$waktu_mulai 	= $this->input->post('waktu_mulai');
 		$waktu_selesai 	= $this->input->post('waktu_selesai');
 		$pengajar 		= $this->input->post('pengajar');
+		$absen 			= 'nonaktif';
 
 		$data['jadpel_kelas']	= $kelas;
 		$data['jadpel_mapel']	= $mapel;
@@ -88,6 +89,7 @@ class Data_jadpel extends CI_Controller
 		$data['waktu_mulai']	= $waktu_mulai;
 		$data['waktu_selesai']	= $waktu_selesai;
 		$data['pengajar']		= $pengajar;
+		$data['absen']			= $absen;
 
 		$save = $this->bd->save('data_jadpel', $data);
 		$output['status'] 	= true;

@@ -197,25 +197,12 @@ public function proses_tambah_data_kelas()
 	$nama_kelas 	= $this->input->post('nama_kelas');
 	$kejuruan 		= $this->input->post('kejuruan');
 
-	$data['nama_kelas']	= $nama_kelas;
 	$data['kejuruan']	= $kejuruan;
+	$data['nama_kelas']	= $nama_kelas;
+	
 
 	$save = $this->bd->save('data_kelas', $data);
-
-	/*Proses Multiple Select Mapel*/
-	$mapel 		= count($this->input->post('mapel'));
-	for($i = 0; $i < $mapel; $i++)
-	{
-		$datas[$i] = array(
-			'id_kelas' => $id_kelas,
-			'mapel' => $this->input->post('mapel[' . $i . ']')
-		);
-
-		$this->db->insert('data_kelas_mapel', $datas[$i]);
-	}
-
 	$output['status'] 	= true;
-
 	$this->output->set_content_type('application/json')->set_output(json_encode($output));
 }
 

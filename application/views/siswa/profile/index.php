@@ -108,7 +108,7 @@
             <li class="mb-4">
              <div class="form-group">
               <label for="exampleInputText1">Motto</label>
-              <textarea rows="4" type="text" class="form-control" name="motto_siswa" placeholder="Masukan Motto" required><?= $getDataSiswa->motto_siswa ?></textarea>
+              <textarea rows="4" type="text" class="form-control" name="motto_siswa" placeholder="Masukan Motto"><?= $getDataSiswa->motto_siswa ?></textarea>
             </div>
           </li>
 

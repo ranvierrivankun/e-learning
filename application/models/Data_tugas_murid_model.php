@@ -1,11 +1,12 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Data_tugas_model extends CI_Model
+class Data_tugas_murid_model extends CI_Model
 {
 
-	public function table_data_tugas($id_mapel,$id_kelas)
+	public function table_data_tugas($id_mapel)
 	{
+		$id_kelas	= userdata('kelas');
 		$awal 	= $this->input->post('length');
 		$akhir 	= $this->input->post('start');
 
@@ -49,8 +50,9 @@ class Data_tugas_model extends CI_Model
 		
 	}
 
-	public function filter_table_data_tugas($id_mapel,$id_kelas)
+	public function filter_table_data_tugas($id_mapel)
 	{
+		$id_kelas	= userdata('kelas');
 		$awal 	= $this->input->post('length');
 		$akhir 	= $this->input->post('start');
 
@@ -87,8 +89,9 @@ class Data_tugas_model extends CI_Model
 
 	}
 
-	public function total_table_data_tugas($id_mapel,$id_kelas)
+	public function total_table_data_tugas($id_mapel)
 	{
+		$id_kelas	= userdata('kelas');
 		$sv = strtolower($_POST['search']['value']);
 
 		if($sv){

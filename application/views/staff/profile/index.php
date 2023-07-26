@@ -103,7 +103,7 @@
             <li class="mb-4">
              <div class="form-group">
               <label for="exampleInputText1">Motto</label>
-              <textarea rows="4" type="text" class="form-control" name="motto_staff" placeholder="Masukan Motto" required><?= $getDataStaff->motto_staff ?></textarea>
+              <textarea rows="4" type="text" class="form-control" name="motto_staff" placeholder="Masukan Motto"><?= $getDataStaff->motto_staff ?></textarea>
             </div>
           </li>
 

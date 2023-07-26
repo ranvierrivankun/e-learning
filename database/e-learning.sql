@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 25, 2023 at 08:43 AM
+-- Generation Time: Jul 27, 2023 at 12:37 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -20,6 +20,36 @@ SET time_zone = "+00:00";
 --
 -- Database: `e-learning`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `data_absen`
+--
+
+CREATE TABLE `data_absen` (
+  `id_absen` int(11) NOT NULL,
+  `id_jadpel_absen` int(11) NOT NULL,
+  `judul_absen` int(11) NOT NULL,
+  `tgl_absen` varchar(50) NOT NULL,
+  `user_absen` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `data_absen_murid`
+--
+
+CREATE TABLE `data_absen_murid` (
+  `id_absen_murid` int(11) NOT NULL,
+  `absen` int(11) NOT NULL,
+  `mapel_absen_murid` int(11) NOT NULL,
+  `user_absen_murid` int(11) NOT NULL,
+  `tgl_absen_murid` varchar(50) NOT NULL,
+  `waktu_absen_murid` varchar(50) NOT NULL,
+  `status_absen_murid` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -56,15 +86,17 @@ CREATE TABLE `data_jadpel` (
   `hari` int(11) NOT NULL,
   `waktu_mulai` varchar(10) NOT NULL,
   `waktu_selesai` varchar(10) NOT NULL,
-  `pengajar` int(11) NOT NULL
+  `pengajar` int(11) NOT NULL,
+  `absen` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `data_jadpel`
 --
 
-INSERT INTO `data_jadpel` (`id_jadpel`, `jadpel_mapel`, `jadpel_kelas`, `hari`, `waktu_mulai`, `waktu_selesai`, `pengajar`) VALUES
-(7, 1, 6, 1, '07:00', '10:00', 3);
+INSERT INTO `data_jadpel` (`id_jadpel`, `jadpel_mapel`, `jadpel_kelas`, `hari`, `waktu_mulai`, `waktu_selesai`, `pengajar`, `absen`) VALUES
+(15, 18, 6, 1, '07:00', '09:00', 8, 'nonaktif'),
+(16, 18, 6, 2, '07:00', '09:00', 8, 'aktif');
 
 -- --------------------------------------------------------
 
@@ -84,7 +116,8 @@ CREATE TABLE `data_kejuruan` (
 INSERT INTO `data_kejuruan` (`id_kejuruan`, `nama_kejuruan`) VALUES
 (1, 'MULTIMEDIA'),
 (2, 'TEKNIK KOMPUTER & JARINGAN'),
-(3, 'TATA KELOLA PERKANTORAN');
+(3, 'TATA KELOLA PERKANTORAN'),
+(7, 'AKUNTASI');
 
 -- --------------------------------------------------------
 
@@ -111,7 +144,10 @@ INSERT INTO `data_kelas` (`id_kelas`, `kejuruan`, `nama_kelas`) VALUES
 (6, 2, 'XII'),
 (7, 3, 'X'),
 (8, 3, 'XI'),
-(9, 3, 'XII');
+(9, 3, 'XII'),
+(13, 7, 'X'),
+(16, 7, 'XI'),
+(17, 7, 'XII');
 
 -- --------------------------------------------------------
 
@@ -129,9 +165,20 @@ CREATE TABLE `data_mapel` (
 --
 
 INSERT INTO `data_mapel` (`id_mapel`, `nama_mapel`) VALUES
-(1, 'Komputer & Dasar Jaringan'),
-(2, 'Pemrograman Dasar'),
-(4, 'Matematika');
+(5, 'Pendidikan Agama dan Budi Pekerti'),
+(6, 'Pendidikan Pancasila dan Kewarganegaraan'),
+(7, 'Bahasa Indonesia'),
+(8, 'Matematika  '),
+(9, 'Sejarah Indonesia'),
+(10, 'Bahasa Inggris'),
+(11, 'Seni Budaya'),
+(12, 'Pendidikan Jasmani, Olahraga, dan Kesehatan'),
+(13, 'Simulasi dan Komunikasi Digital'),
+(14, 'Fisika'),
+(15, 'Sistem Komputer'),
+(16, 'Komputer dan Jaringan Dasar'),
+(17, 'Pemrograman Dasar'),
+(18, 'Administrasi Sistem Jaringan');
 
 -- --------------------------------------------------------
 
@@ -149,13 +196,6 @@ CREATE TABLE `data_materi` (
   `tgl_update_materi` varchar(50) DEFAULT NULL,
   `user_materi` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `data_materi`
---
-
-INSERT INTO `data_materi` (`id_materi`, `id_jadpel_materi`, `judul_materi`, `des_materi`, `file_materi`, `tgl_materi`, `tgl_update_materi`, `user_materi`) VALUES
-(9, 7, 'Pertemuan 1', 'Pelajari materi berikut untuk persiapan ulangan harian minggu depan', '31451649c06d069485b7e8fd3498d3f8.pdf', '', '2023-07-24 10:03', 3);
 
 -- --------------------------------------------------------
 
@@ -202,8 +242,9 @@ CREATE TABLE `data_siswa` (
 --
 
 INSERT INTO `data_siswa` (`id_siswa`, `kelas`, `nisn`, `password`, `nama_siswa`, `status_siswa`, `jk_siswa`, `foto`, `email_siswa`, `notelp_siswa`, `motto_siswa`) VALUES
-(1, 6, '1234567890', '$2y$10$T8SI4DXUfIyUHDGuhh1MAub0xy0mQdDarNXGkisW3zujI3p0Kv.VK', 'Cikamlia', 'aktif', 'Wanita', 'png-clipart-mysql-mysql.png', 'cikamlia@smkdiponegoro1.com', '08123432876', 'Ilmu hanya menjadi sia-sia saja bila tidak diamalkan kepada orang lain.'),
-(3, 6, '0987654321', '$2y$10$YoKjYqu4Hy02Xc/NJ6pE2.eYQQQ9cjTyoa5PfiARKtGlzBAqix8dm', 'Rivan', 'aktif', 'Pria', 'siswa.jpg', 'ranvierrivankun@gmail.com', '081283143133', 'Orang yang malas belajar tidak akan bisa berkembang!');
+(1, 6, '1', '$2y$10$T8SI4DXUfIyUHDGuhh1MAub0xy0mQdDarNXGkisW3zujI3p0Kv.VK', 'Cikamlia', 'aktif', 'Wanita', 'png-clipart-mysql-mysql.png', 'cikamlia@smkdiponegoro1.com', '08123432876', 'Ilmu hanya menjadi sia-sia saja bila tidak diamalkan kepada orang lain.'),
+(3, 6, '2', '$2y$10$YoKjYqu4Hy02Xc/NJ6pE2.eYQQQ9cjTyoa5PfiARKtGlzBAqix8dm', 'Rivan', 'aktif', 'Pria', 'siswa.jpg', 'ranvierrivankun@gmail.com', '081283143133', 'Orang yang malas belajar tidak akan bisa berkembang!'),
+(4, 5, '3', '$2y$10$XI79pGjuR8N3fNG./f1Rtu..L.pFYrbAreJsJYHPzaWt.CgwZOyqq', 'Kebab', 'aktif', 'Pria', 'siswa.jpg', 'kebab@smkdiponegoro1.com', '081273456785', '');
 
 -- --------------------------------------------------------
 
@@ -233,7 +274,9 @@ INSERT INTO `data_staff` (`id_staff`, `role`, `nik`, `password`, `nama_staff`, `
 (1, 1, '1', '$2y$10$/Dv/VWTJ5shycdvLO/2MtuSlrW6TKde8d1p.ohFjvJD5hQaI1xAYm', 'Admin E-Learning', 'aktif', 'Pria', 'logo-yayasan-al-hidayah-sma-diponegoro-jkt.jpg', 'admin.e-learning@smkdiponegoro1.com', '000000000000', 'Siswa tidak membutuhkan guru yang sempurna. Siswa membutuhkan seorang guru yang bahagia. Siapa yang akan membuat mereka bersemangat untuk datang ke sekolah dan menumbuhkan kecintaan untuk belajar.'),
 (2, 2, '2', '$2y$10$2HhiRLw3m6VTeIcOMxPkPOxuSHYjkm5.pN9fbfraTXLJf/TKb7/Gu', 'Imam Abdul', 'aktif', 'Pria', 'staff.jpg', 'imamabdul@smkdiponegoro1.com', '081278659877', ''),
 (3, 3, '3', '$2y$10$TAAhHodBKzUxlxqeXp9UvOkuIi8J4vLTQYM/YQBOcIfbyZCEVuQ.i', 'Aisha Nadine', 'aktif', 'Wanita', 'staff.jpg', 'aishanadine@smkdiponegoro1.com', '081287644322', ''),
-(6, 3, '4', '$2y$10$ZcuOX5T3MFn/R3ZANRLpfuQq115zkAjB7CZMBlRzN31ILMadmG6.K', 'Hamza Haikal', 'aktif', 'Pria', 'staff.jpg', 'hamzahaikal@smkdiponegoro1.com', '081285323412', '');
+(6, 3, '4', '$2y$10$ZcuOX5T3MFn/R3ZANRLpfuQq115zkAjB7CZMBlRzN31ILMadmG6.K', 'Hamza Haikal', 'aktif', 'Pria', 'staff.jpg', 'hamzahaikal@smkdiponegoro1.com', '081285323412', ''),
+(7, 3, '5', '$2y$10$xm1NVhcHMZuVGdRPN7MgOO4wv7JlH5jTEXJTTFOgGE2bfut1w5JIi', 'Uzumaki Naruto', 'aktif', 'Pria', 'staff.jpg', 'uzumakinaruto@smkdiponegoro1.com', '081273453344', ''),
+(8, 3, '6', '$2y$10$lEssPXiRNXiZj3DmWLniou2.O/KQX3Jt2zHqDcrAO6IyYntphu9W6', 'Taufan Himawan', 'aktif', 'Pria', 'staff.jpg', 'taufanhimawan@smkdiponegoro1.com', '081298345576', '');
 
 -- --------------------------------------------------------
 
@@ -254,13 +297,6 @@ CREATE TABLE `data_tugas` (
   `user_tugas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `data_tugas`
---
-
-INSERT INTO `data_tugas` (`id_tugas`, `id_jadpel_tugas`, `judul_tugas`, `des_tugas`, `file_tugas`, `tgl_tugas`, `tgl_mulai_tugas`, `tgl_selesai_tugas`, `tgl_update_tugas`, `user_tugas`) VALUES
-(6, 7, 'Pertemuan 1', 'Kerjakan tugas berikut dengan baik dan benar', 'c28319cabbaf37e1b573c87fae6bc8df.pdf', '2023-07-25 08:32', '2023-07-25 12:00', '2023-07-26 12:00', '2023-07-25 08:32', 3);
-
 -- --------------------------------------------------------
 
 --
@@ -278,13 +314,6 @@ CREATE TABLE `data_tugas_selesai` (
   `catatan_tugas` text DEFAULT NULL,
   `pengajar_tugas_selesai` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `data_tugas_selesai`
---
-
-INSERT INTO `data_tugas_selesai` (`id_tugas_selesai`, `tugas`, `user_tugas_selesai`, `file_tugas_selesai`, `tgl_tugas_selesai`, `status_tugas_selesai`, `nilai_tugas`, `catatan_tugas`, `pengajar_tugas_selesai`) VALUES
-(15, 6, 1, 'https://sweetalert2.github.io/', '2023-07-25 08:32', 'proses', 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -307,6 +336,22 @@ INSERT INTO `pengaturan` (`id_pengaturan`, `nama_sekolah`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `data_absen`
+--
+ALTER TABLE `data_absen`
+  ADD PRIMARY KEY (`id_absen`),
+  ADD KEY `id_jadpel_absen` (`id_jadpel_absen`),
+  ADD KEY `user_absen` (`user_absen`);
+
+--
+-- Indexes for table `data_absen_murid`
+--
+ALTER TABLE `data_absen_murid`
+  ADD PRIMARY KEY (`id_absen_murid`),
+  ADD KEY `absen` (`absen`),
+  ADD KEY `mapel_absen_murid` (`mapel_absen_murid`);
 
 --
 -- Indexes for table `data_hari`
@@ -348,7 +393,8 @@ ALTER TABLE `data_mapel`
 --
 ALTER TABLE `data_materi`
   ADD PRIMARY KEY (`id_materi`),
-  ADD KEY `id_jadpel_materi` (`id_jadpel_materi`);
+  ADD KEY `id_jadpel_materi` (`id_jadpel_materi`),
+  ADD KEY `user_materi` (`user_materi`);
 
 --
 -- Indexes for table `data_role`
@@ -375,7 +421,8 @@ ALTER TABLE `data_staff`
 --
 ALTER TABLE `data_tugas`
   ADD PRIMARY KEY (`id_tugas`),
-  ADD KEY `id_jadpel_tugas` (`id_jadpel_tugas`);
+  ADD KEY `id_jadpel_tugas` (`id_jadpel_tugas`),
+  ADD KEY `user_tugas` (`user_tugas`);
 
 --
 -- Indexes for table `data_tugas_selesai`
@@ -397,6 +444,12 @@ ALTER TABLE `pengaturan`
 --
 
 --
+-- AUTO_INCREMENT for table `data_absen_murid`
+--
+ALTER TABLE `data_absen_murid`
+  MODIFY `id_absen_murid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+
+--
 -- AUTO_INCREMENT for table `data_hari`
 --
 ALTER TABLE `data_hari`
@@ -406,31 +459,31 @@ ALTER TABLE `data_hari`
 -- AUTO_INCREMENT for table `data_jadpel`
 --
 ALTER TABLE `data_jadpel`
-  MODIFY `id_jadpel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_jadpel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `data_kejuruan`
 --
 ALTER TABLE `data_kejuruan`
-  MODIFY `id_kejuruan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_kejuruan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `data_kelas`
 --
 ALTER TABLE `data_kelas`
-  MODIFY `id_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `data_mapel`
 --
 ALTER TABLE `data_mapel`
-  MODIFY `id_mapel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_mapel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `data_materi`
 --
 ALTER TABLE `data_materi`
-  MODIFY `id_materi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_materi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `data_role`
@@ -442,25 +495,25 @@ ALTER TABLE `data_role`
 -- AUTO_INCREMENT for table `data_siswa`
 --
 ALTER TABLE `data_siswa`
-  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `data_staff`
 --
 ALTER TABLE `data_staff`
-  MODIFY `id_staff` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_staff` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `data_tugas`
 --
 ALTER TABLE `data_tugas`
-  MODIFY `id_tugas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_tugas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `data_tugas_selesai`
 --
 ALTER TABLE `data_tugas_selesai`
-  MODIFY `id_tugas_selesai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_tugas_selesai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `pengaturan`

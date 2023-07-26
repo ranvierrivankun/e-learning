@@ -1,11 +1,12 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Data_tugas_model extends CI_Model
+class Data_materi_murid_model extends CI_Model
 {
 
-	public function table_data_tugas($id_mapel,$id_kelas)
+	public function table_data_materi($id_mapel)
 	{
+		$id_kelas	= userdata('kelas');
 		$awal 	= $this->input->post('length');
 		$akhir 	= $this->input->post('start');
 
@@ -15,11 +16,11 @@ class Data_tugas_model extends CI_Model
 			$search = $sv;
 			$cari = 
 			'
-			judul_tugas LIKE ' . "'%" . $search . "%'" . '
+			judul_materi LIKE ' . "'%" . $search . "%'" . '
 			OR
-			des_tugas LIKE ' . "'%" . $search . "%'" . '  
+			des_materi LIKE ' . "'%" . $search . "%'" . '  
 			OR
-			tgl_tugas LIKE ' . "'%" . $search . "%'" . '  
+			tgl_materi LIKE ' . "'%" . $search . "%'" . '  
 			';
 			$k_search = $this->db->where("($cari)");
 		}else{
@@ -34,8 +35,8 @@ class Data_tugas_model extends CI_Model
 
 		$k_search;
 		$this->db->select('*');
-		$this->db->from('data_tugas');
-		$this->db->join('data_jadpel','id_jadpel=id_jadpel_tugas');
+		$this->db->from('data_materi');
+		$this->db->join('data_jadpel','id_jadpel=id_jadpel_materi');
 		$this->db->join('data_mapel','id_mapel=jadpel_mapel');
 		$this->db->join('data_kelas','id_kelas=jadpel_kelas');
 		$this->db->join('data_kejuruan','id_kejuruan=kejuruan');
@@ -43,14 +44,15 @@ class Data_tugas_model extends CI_Model
 		$this->db->join('data_staff','id_staff=pengajar');
 		$this->db->where('jadpel_mapel', $id_mapel);
 		$this->db->where('jadpel_kelas', $id_kelas);
-		$this->db->order_by('tgl_tugas', 'DESC');
+		$this->db->order_by('tgl_materi', 'DESC');
 		$batas;
 		return $this->db->get()->result();
 		
 	}
 
-	public function filter_table_data_tugas($id_mapel,$id_kelas)
+	public function filter_table_data_materi($id_mapel)
 	{
+		$id_kelas	= userdata('kelas');
 		$awal 	= $this->input->post('length');
 		$akhir 	= $this->input->post('start');
 
@@ -60,11 +62,11 @@ class Data_tugas_model extends CI_Model
 			$search = $sv;
 			$cari = 
 			'
-			judul_tugas LIKE ' . "'%" . $search . "%'" . '
+			judul_materi LIKE ' . "'%" . $search . "%'" . '
 			OR
-			des_tugas LIKE ' . "'%" . $search . "%'" . '  
+			des_materi LIKE ' . "'%" . $search . "%'" . '  
 			OR
-			tgl_tugas LIKE ' . "'%" . $search . "%'" . '  
+			tgl_materi LIKE ' . "'%" . $search . "%'" . '  
 			';
 			$k_search = $this->db->where("($cari)");
 		}else{
@@ -73,8 +75,8 @@ class Data_tugas_model extends CI_Model
 
 		$k_search;
 		$this->db->select('*');
-		$this->db->from('data_tugas');
-		$this->db->join('data_jadpel','id_jadpel=id_jadpel_tugas');
+		$this->db->from('data_materi');
+		$this->db->join('data_jadpel','id_jadpel=id_jadpel_materi');
 		$this->db->join('data_mapel','id_mapel=jadpel_mapel');
 		$this->db->join('data_kelas','id_kelas=jadpel_kelas');
 		$this->db->join('data_kejuruan','id_kejuruan=kejuruan');
@@ -82,24 +84,25 @@ class Data_tugas_model extends CI_Model
 		$this->db->join('data_staff','id_staff=pengajar');
 		$this->db->where('jadpel_mapel', $id_mapel);
 		$this->db->where('jadpel_kelas', $id_kelas);
-		$this->db->order_by('tgl_tugas', 'DESC');
+		$this->db->order_by('tgl_materi', 'DESC');
 		return $this->db->get()->num_rows();
 
 	}
 
-	public function total_table_data_tugas($id_mapel,$id_kelas)
+	public function total_table_data_materi($id_mapel)
 	{
+		$id_kelas	= userdata('kelas');
 		$sv = strtolower($_POST['search']['value']);
 
 		if($sv){
 			$search = $sv;
 			$cari = 
 			'
-			judul_tugas LIKE ' . "'%" . $search . "%'" . '
+			judul_materi LIKE ' . "'%" . $search . "%'" . '
 			OR
-			des_tugas LIKE ' . "'%" . $search . "%'" . '  
+			des_materi LIKE ' . "'%" . $search . "%'" . '  
 			OR
-			tgl_tugas LIKE ' . "'%" . $search . "%'" . '    
+			tgl_materi LIKE ' . "'%" . $search . "%'" . '  
 			';
 			$k_search = $this->db->where("($cari)");
 		}else{
@@ -108,8 +111,8 @@ class Data_tugas_model extends CI_Model
 
 		$k_search;
 		$this->db->select('*');
-		$this->db->from('data_tugas');
-		$this->db->join('data_jadpel','id_jadpel=id_jadpel_tugas');
+		$this->db->from('data_materi');
+		$this->db->join('data_jadpel','id_jadpel=id_jadpel_materi');
 		$this->db->join('data_mapel','id_mapel=jadpel_mapel');
 		$this->db->join('data_kelas','id_kelas=jadpel_kelas');
 		$this->db->join('data_kejuruan','id_kejuruan=kejuruan');
@@ -117,7 +120,7 @@ class Data_tugas_model extends CI_Model
 		$this->db->join('data_staff','id_staff=pengajar');
 		$this->db->where('jadpel_mapel', $id_mapel);
 		$this->db->where('jadpel_kelas', $id_kelas);
-		$this->db->order_by('tgl_tugas', 'DESC');
+		$this->db->order_by('tgl_materi', 'DESC');
 		return $this->db->get()->num_rows();
 
 	}

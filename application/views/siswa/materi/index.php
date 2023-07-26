@@ -9,9 +9,13 @@
                      <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
                            <h4 class="card-title mb-1">Materi <?= $where->nama_mapel ?></h4>
+                           <span class="badge badge-pill badge-light"><?= $where->nama_hari ?></span>
+                           <span class="badge badge-pill badge-primary"><?= $where->waktu_mulai ?> - <?= $where->waktu_selesai ?></span>
                         </div>
                      </div>
                      <div class="card-body">
+
+                        <input type="hidden" id="id_mapel" value="<?= $where->jadpel_mapel; ?>"></input>
 
                         <div class="row">
 
@@ -54,7 +58,7 @@
 
   $(document).ready(function() {
 
-   var id_jadpel = $('#id_jadpel').val();
+   var id_mapel = $('#id_mapel').val();
 
    var table_data_materi = $('#table_data_materi').DataTable({ 
     destroy: true,
@@ -67,10 +71,10 @@
       url: "<?= site_url('Jadwal_pelajaran/table_data_materi')?>",
       method: "POST",
       data: {
-         id_jadpel: id_jadpel,
-      }
-   },
-   "language": {
+        id_mapel: id_mapel,
+     }
+  },
+  "language": {
      processing: '<i class="fa-solid fa-spinner"></i> Sedang diproses'
   },
   columnDefs: [
