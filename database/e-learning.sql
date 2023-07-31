@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 27, 2023 at 12:37 AM
+-- Generation Time: Jul 31, 2023 at 11:19 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -51,6 +51,14 @@ CREATE TABLE `data_absen_murid` (
   `status_absen_murid` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `data_absen_murid`
+--
+
+INSERT INTO `data_absen_murid` (`id_absen_murid`, `absen`, `mapel_absen_murid`, `user_absen_murid`, `tgl_absen_murid`, `waktu_absen_murid`, `status_absen_murid`) VALUES
+(128, 3, 16, 1, '2023-08-01', '22:47', 'aktif'),
+(129, 3, 16, 3, '2023-08-01', '22:48', 'aktif');
+
 -- --------------------------------------------------------
 
 --
@@ -71,7 +79,9 @@ INSERT INTO `data_hari` (`id_hari`, `nama_hari`) VALUES
 (2, 'Selasa'),
 (3, 'Rabu'),
 (4, 'Kamis'),
-(5, 'Jumat');
+(5, 'Jumat'),
+(6, 'Sabtu'),
+(7, 'Minggu');
 
 -- --------------------------------------------------------
 
@@ -95,8 +105,7 @@ CREATE TABLE `data_jadpel` (
 --
 
 INSERT INTO `data_jadpel` (`id_jadpel`, `jadpel_mapel`, `jadpel_kelas`, `hari`, `waktu_mulai`, `waktu_selesai`, `pengajar`, `absen`) VALUES
-(15, 18, 6, 1, '07:00', '09:00', 8, 'nonaktif'),
-(16, 18, 6, 2, '07:00', '09:00', 8, 'aktif');
+(61, 10, 6, 1, '06:30', '09:00', 3, 'nonaktif');
 
 -- --------------------------------------------------------
 
@@ -117,7 +126,7 @@ INSERT INTO `data_kejuruan` (`id_kejuruan`, `nama_kejuruan`) VALUES
 (1, 'MULTIMEDIA'),
 (2, 'TEKNIK KOMPUTER & JARINGAN'),
 (3, 'TATA KELOLA PERKANTORAN'),
-(7, 'AKUNTASI');
+(8, 'AKUNTANSI');
 
 -- --------------------------------------------------------
 
@@ -145,9 +154,9 @@ INSERT INTO `data_kelas` (`id_kelas`, `kejuruan`, `nama_kelas`) VALUES
 (7, 3, 'X'),
 (8, 3, 'XI'),
 (9, 3, 'XII'),
-(13, 7, 'X'),
-(16, 7, 'XI'),
-(17, 7, 'XII');
+(18, 8, 'XI'),
+(19, 8, 'XII'),
+(20, 8, 'X');
 
 -- --------------------------------------------------------
 
@@ -178,7 +187,8 @@ INSERT INTO `data_mapel` (`id_mapel`, `nama_mapel`) VALUES
 (15, 'Sistem Komputer'),
 (16, 'Komputer dan Jaringan Dasar'),
 (17, 'Pemrograman Dasar'),
-(18, 'Administrasi Sistem Jaringan');
+(18, 'Administrasi Sistem Jaringan'),
+(19, 'Dasar Akuntansi');
 
 -- --------------------------------------------------------
 
@@ -244,7 +254,8 @@ CREATE TABLE `data_siswa` (
 INSERT INTO `data_siswa` (`id_siswa`, `kelas`, `nisn`, `password`, `nama_siswa`, `status_siswa`, `jk_siswa`, `foto`, `email_siswa`, `notelp_siswa`, `motto_siswa`) VALUES
 (1, 6, '1', '$2y$10$T8SI4DXUfIyUHDGuhh1MAub0xy0mQdDarNXGkisW3zujI3p0Kv.VK', 'Cikamlia', 'aktif', 'Wanita', 'png-clipart-mysql-mysql.png', 'cikamlia@smkdiponegoro1.com', '08123432876', 'Ilmu hanya menjadi sia-sia saja bila tidak diamalkan kepada orang lain.'),
 (3, 6, '2', '$2y$10$YoKjYqu4Hy02Xc/NJ6pE2.eYQQQ9cjTyoa5PfiARKtGlzBAqix8dm', 'Rivan', 'aktif', 'Pria', 'siswa.jpg', 'ranvierrivankun@gmail.com', '081283143133', 'Orang yang malas belajar tidak akan bisa berkembang!'),
-(4, 5, '3', '$2y$10$XI79pGjuR8N3fNG./f1Rtu..L.pFYrbAreJsJYHPzaWt.CgwZOyqq', 'Kebab', 'aktif', 'Pria', 'siswa.jpg', 'kebab@smkdiponegoro1.com', '081273456785', '');
+(4, 19, '3', '$2y$10$XI79pGjuR8N3fNG./f1Rtu..L.pFYrbAreJsJYHPzaWt.CgwZOyqq', 'Riki', 'aktif', 'Pria', 'siswa.jpg', 'riki@smkdiponegoro1.com', '081273456785', ''),
+(5, 19, '4', '$2y$10$yv7RGSiwvhgBV/joXTx6Z.EEaH5ItFNw6YtIM5f3qA/hQRCu.twSy', 'Farhan', 'aktif', 'Pria', 'siswa.jpg', 'farhan01@gmail.com', '081283537765', '');
 
 -- --------------------------------------------------------
 
@@ -273,10 +284,9 @@ CREATE TABLE `data_staff` (
 INSERT INTO `data_staff` (`id_staff`, `role`, `nik`, `password`, `nama_staff`, `status_staff`, `jk_staff`, `foto`, `email_staff`, `notelp_staff`, `motto_staff`) VALUES
 (1, 1, '1', '$2y$10$/Dv/VWTJ5shycdvLO/2MtuSlrW6TKde8d1p.ohFjvJD5hQaI1xAYm', 'Admin E-Learning', 'aktif', 'Pria', 'logo-yayasan-al-hidayah-sma-diponegoro-jkt.jpg', 'admin.e-learning@smkdiponegoro1.com', '000000000000', 'Siswa tidak membutuhkan guru yang sempurna. Siswa membutuhkan seorang guru yang bahagia. Siapa yang akan membuat mereka bersemangat untuk datang ke sekolah dan menumbuhkan kecintaan untuk belajar.'),
 (2, 2, '2', '$2y$10$2HhiRLw3m6VTeIcOMxPkPOxuSHYjkm5.pN9fbfraTXLJf/TKb7/Gu', 'Imam Abdul', 'aktif', 'Pria', 'staff.jpg', 'imamabdul@smkdiponegoro1.com', '081278659877', ''),
-(3, 3, '3', '$2y$10$TAAhHodBKzUxlxqeXp9UvOkuIi8J4vLTQYM/YQBOcIfbyZCEVuQ.i', 'Aisha Nadine', 'aktif', 'Wanita', 'staff.jpg', 'aishanadine@smkdiponegoro1.com', '081287644322', ''),
-(6, 3, '4', '$2y$10$ZcuOX5T3MFn/R3ZANRLpfuQq115zkAjB7CZMBlRzN31ILMadmG6.K', 'Hamza Haikal', 'aktif', 'Pria', 'staff.jpg', 'hamzahaikal@smkdiponegoro1.com', '081285323412', ''),
-(7, 3, '5', '$2y$10$xm1NVhcHMZuVGdRPN7MgOO4wv7JlH5jTEXJTTFOgGE2bfut1w5JIi', 'Uzumaki Naruto', 'aktif', 'Pria', 'staff.jpg', 'uzumakinaruto@smkdiponegoro1.com', '081273453344', ''),
-(8, 3, '6', '$2y$10$lEssPXiRNXiZj3DmWLniou2.O/KQX3Jt2zHqDcrAO6IyYntphu9W6', 'Taufan Himawan', 'aktif', 'Pria', 'staff.jpg', 'taufanhimawan@smkdiponegoro1.com', '081298345576', '');
+(3, 3, '3', '$2y$10$TAAhHodBKzUxlxqeXp9UvOkuIi8J4vLTQYM/YQBOcIfbyZCEVuQ.i', 'Aisha Nadine', 'aktif', 'Wanita', '162183873-461130215079335-3870609655305769111-n-585dd1757c983fd9de5d9a98211831e9.jpg', 'aishanadine@smkdiponegoro1.com', '081287644322', ''),
+(6, 3, '4', '$2y$10$ZcuOX5T3MFn/R3ZANRLpfuQq115zkAjB7CZMBlRzN31ILMadmG6.K', 'Hamza Haikal', 'aktif', 'Pria', 'png-transparent-teacher-education-jesus-cartoon-angle-class-hand.png', 'hamzahaikal@smkdiponegoro1.com', '081285323412', ''),
+(7, 3, '5', '$2y$10$xm1NVhcHMZuVGdRPN7MgOO4wv7JlH5jTEXJTTFOgGE2bfut1w5JIi', 'Taufan Himawan', 'aktif', 'Pria', 'admin.png', 'taufanhimawan@smkdiponegoro1.com', '081273453344', '');
 
 -- --------------------------------------------------------
 
@@ -447,43 +457,43 @@ ALTER TABLE `pengaturan`
 -- AUTO_INCREMENT for table `data_absen_murid`
 --
 ALTER TABLE `data_absen_murid`
-  MODIFY `id_absen_murid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `id_absen_murid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT for table `data_hari`
 --
 ALTER TABLE `data_hari`
-  MODIFY `id_hari` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_hari` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `data_jadpel`
 --
 ALTER TABLE `data_jadpel`
-  MODIFY `id_jadpel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_jadpel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `data_kejuruan`
 --
 ALTER TABLE `data_kejuruan`
-  MODIFY `id_kejuruan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_kejuruan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `data_kelas`
 --
 ALTER TABLE `data_kelas`
-  MODIFY `id_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `data_mapel`
 --
 ALTER TABLE `data_mapel`
-  MODIFY `id_mapel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_mapel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `data_materi`
 --
 ALTER TABLE `data_materi`
-  MODIFY `id_materi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_materi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `data_role`
@@ -495,7 +505,7 @@ ALTER TABLE `data_role`
 -- AUTO_INCREMENT for table `data_siswa`
 --
 ALTER TABLE `data_siswa`
-  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `data_staff`
@@ -504,16 +514,10 @@ ALTER TABLE `data_staff`
   MODIFY `id_staff` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `data_tugas`
---
-ALTER TABLE `data_tugas`
-  MODIFY `id_tugas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
 -- AUTO_INCREMENT for table `data_tugas_selesai`
 --
 ALTER TABLE `data_tugas_selesai`
-  MODIFY `id_tugas_selesai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_tugas_selesai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `pengaturan`
