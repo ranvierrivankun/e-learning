@@ -90,27 +90,33 @@
   })
 
   /*Delete Data Jadpel*/
-  function delete_data(id)
-  {
+  function delete_data(id) {
     Swal.fire({
-      title: 'Delete',
-      text: "Hapus Data Jadwal Pelajaran?",
-      icon: 'question',
+      title: 'Konfirmasi',
+      html: '<div>Anda akan melakukan tindakan penghapusan data.<br>Data Materi, Data Tugas dan Data Absen akan ikut terhapus permanen.<br><strong>Ketik "HAPUS" untuk melanjutkan:</strong></div>',
+      icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       confirmButtonText: 'Hapus',
-      cancelButtonText: 'Batal'
+      cancelButtonText: 'Batal',
+      input: 'text',
+      inputPlaceholder: 'Ketik "HAPUS" untuk konfirmasi',
+      inputValidator: (value) => {
+        if (value !== 'HAPUS') {
+          return 'Ketik "HAPUS" dengan benar untuk melanjutkan!';
+        }
+      }
     }).then((result) => {
-      if (result.value) {
+      if (result.isConfirmed) {
         $.ajax({
           type: "post",
           url: "<?= site_url('data_jadpel/delete_data_jadpel') ?>",
-          data : {
+          data: {
             id: id,
           },
           dataType: "json",
-          success: function(response) {
-            if(response.sukses){
+          success: function (response) {
+            if (response.sukses) {
               Swal.fire({
                 icon: 'success',
                 confirmButtonColor: '#697a8d',

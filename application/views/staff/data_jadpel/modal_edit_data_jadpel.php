@@ -1,21 +1,17 @@
 <form method="POST" id="form_edit" enctype="multipart/form-data">
 
-     <input type="hidden" name="id_jadpel" value="<?= $edit->id_jadpel ?>">
+ <input type="hidden" name="id_jadpel" value="<?= $edit->id_jadpel ?>">
 
-   <div class="modal-body">
+ <div class="modal-body">
 
     <div class="mb-1">
         <label for="nameLarge" class="form-label">Kelas</label>
-        <select class="form-control kelas" name="kelas" required>
-            <option value="<?= $edit->jadpel_kelas ?>"><?= $edit->nama_kelas ?> - <?= $edit->nama_kejuruan ?></option></select>
-        </select>
+        <input type="text" class="form-control" value="<?= $edit->nama_kelas ?> - <?= $edit->nama_kejuruan ?>" readonly>
     </div>
 
     <div class="mb-1">
         <label for="nameLarge" class="form-label">Mata Pelajaran</label>
-        <select class="form-control mapel" name="mapel" required>
-            <option value="<?= $edit->jadpel_mapel ?>"><?= $edit->nama_mapel ?></option></select>
-        </select>
+        <input type="text" class="form-control" value="<?= $edit->nama_mapel ?>" readonly>
     </div>
 
     <div class="row">

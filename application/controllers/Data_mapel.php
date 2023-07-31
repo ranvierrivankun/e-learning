@@ -48,7 +48,7 @@ class Data_mapel extends CI_Controller
 			<i class='fa-solid fa-delete-left'></i>
 			</a>";
 
-			$td[] = "<center><div class='btn-group'>$edit $delete</a></center>";
+			$td[] = "<center><div class='btn-group'>$edit</a></center>";
 			$td[] = $tb->nama_mapel;
 
 			$data[] = $td;

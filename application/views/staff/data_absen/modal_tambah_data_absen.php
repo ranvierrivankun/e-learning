@@ -13,8 +13,6 @@
             $id_mapel       = $where->jadpel_mapel;
             $id_kelas       = $where->jadpel_kelas;
 
-            /*$query          = $this->db->query("SELECT max(judul_absen) as ja FROM data_absen WHERE id_jadpel_absen, $id_jadpel")->row_array();*/
-
             $query          = $this->db->select_max('judul_absen')->from('data_absen')->join('data_jadpel','id_jadpel=id_jadpel_absen')->where('jadpel_mapel', $id_mapel)->where('jadpel_kelas', $id_kelas)->get()->row_array();
             $urutan         = $query['judul_absen'];
             $urutan++;
@@ -28,7 +26,7 @@
 
             <div class="col mb-1">
                 <label for="nameLarge" class="form-label">Tanggal Absen</label>
-                <input type="text" name="tgl_absen" class="form-control tanggal" value="<?= date('Y-m-d') ?>" placeholder="Masukan Tanggal Absen" required>
+                <input type="text" name="tgl_absen" class="form-control" value="<?= date('Y-m-d') ?>" placeholder="Masukan Tanggal Absen" required readonly>
             </div>
         </div>
 

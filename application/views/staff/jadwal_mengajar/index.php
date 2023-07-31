@@ -15,34 +15,54 @@
 
                         <div class="row">
 
-                           <div class="col-lg-10">
+                           <div class="col-lg-8">
                            </div>
 
-                           <div class="btn-group col-lg-2 mb-2">
-                            <button class="btn btn-dark" onclick="reload_table_jadwal_mengajar()">
-                             Refresh 
-                          </button>
-                       </div>
+                           <?php
 
-                    </div>
+                           $hari_ini = date("N"); // Format "N" akan mengembalikan angka 1-7 yang mewakili hari dari Senin hingga Minggu  
+                           $hari = $this->db->select('*')->from('data_hari')->get()->result_array();
 
-                    <div class="table-responsive">
-                     <table id="table_jadwal_mengajar" class="table table-sm table-hover">
-                        <thead>
-                           <tr>
-                              <th width="10%">Aksi</th>
-                              <th>Nama Mata Pelajaran</th>
-                              <th>Kelas & Nama Kejuruan</th>
-                              <th>Hari & Jam Pelajaran</th>
-                           </tr>
-                        </thead>
-                     </table>
+                           ?>
+
+                           <div class="col-lg-2 mb-2">
+                            <select class="form-control" id="hari">
+                             <?php foreach ($hari as $data) { 
+                           $selected = ($data['id_hari'] == $hari_ini) ? "selected" : ""; // Menandai hari ini sebagai pilihan (selected)
+                           ?>
+                           <option value="<?php echo $data['id_hari']; ?>" <?php echo $selected; ?>><?php echo $data['nama_hari']; ?></option>
+                        <?php } ?>
+                     </select>
                   </div>
-               </div>
-            </div>
+
+                  <div class="btn-group col-lg-2 mb-2">
+                   <button class="btn btn-light" onclick="table_jadwal_mengajar()">
+                      Filter
+                   </button>
+                   <button class="btn btn-dark" onclick="reload_table_jadwal_mengajar()">
+                    Refresh 
+                 </button>
+              </div>
+
+           </div>
+
+           <div class="table-responsive">
+            <table id="table_jadwal_mengajar" class="table table-sm table-hover">
+               <thead>
+                  <tr>
+                     <th width="10%">Aksi</th>
+                     <th>Nama Mata Pelajaran</th>
+                     <th>Kelas & Nama Kejuruan</th>
+                     <th>Hari & Jam Pelajaran</th>
+                  </tr>
+               </thead>
+            </table>
          </div>
       </div>
    </div>
+</div>
+</div>
+</div>
 
 </div>
 </div>
@@ -53,8 +73,8 @@
   function table_jadwal_mengajar() {
 
     $(document).ready(function() {
-
-      var table_jadwal_mengajar = $('#table_jadwal_mengajar').DataTable({ 
+       var hari = $('#hari').val();
+       var table_jadwal_mengajar = $('#table_jadwal_mengajar').DataTable({ 
         destroy: true,
         ordering: false,
         processing: true,
@@ -64,7 +84,7 @@
         ajax: {
          url: "<?= site_url('Jadwal_mengajar/table_jadwal_mengajar')?>",
          method: "POST",
-         data: {}
+         data: {hari: hari}
       },
       "language": {
        processing: '<i class="fa-solid fa-spinner"></i> Sedang diproses'
@@ -77,7 +97,7 @@
     ],
 
  });
-   });
+    });
  }table_jadwal_mengajar();
 
 /*Reload Table*/

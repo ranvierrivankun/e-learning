@@ -9,7 +9,13 @@
                 <div class="col mb-1">
 
                     <label for="nameLarge" class="form-label">Link Tugas</label>
-                    <label class="mt-2 badge badge-success">Tugas Sudah Dikumpulkan</label>
+
+                    <?php if($upload2->status_tugas_selesai == 'nonaktif') { ?>
+                        <label class="mt-2 badge badge-danger">Tugas Belum Diupload</label>
+                    <?php } else { ?>
+                        <label class="mt-2 badge badge-success">Tugas Sudah Dikumpulkan</label>
+                    <?php } ?>
+                    
 
                     <textarea type="text" name="file_tugas_selesai" class="form-control" placeholder="Masukan Link Tugas: https://drive.google.com/file/d/qwertyasdfgzxcvbqazwsxedc123456789/view" required><?= $upload2->file_tugas_selesai ?></textarea>
                 </div>
@@ -31,11 +37,11 @@
         </div>
 
         <div class="modal-footer">
-         <button type="button" class="btn btn-seccess" data-dismiss="modal">Close</button>
-         <button type="submit" class="btn btn-primary" id="saving">Update</button>
-     </div>
+           <button type="button" class="btn btn-seccess" data-dismiss="modal">Close</button>
+           <button type="submit" class="btn btn-primary" id="saving">Upload</button>
+       </div>
 
- </form>
+   </form>
 <?php } else { ?>
     <form method="POST" id="form_upload" enctype="multipart/form-data">
 
@@ -56,26 +62,26 @@
         </div>
 
         <div class="modal-footer">
-           <button type="button" class="btn btn-seccess" data-dismiss="modal">Close</button>
-           <button type="submit" class="btn btn-primary" id="saving">Upload</button>
-       </div>
+         <button type="button" class="btn btn-seccess" data-dismiss="modal">Close</button>
+         <button type="submit" class="btn btn-primary" id="saving">Upload</button>
+     </div>
 
-   </form>
+ </form>
 <?php } ?>
 
 
 
 <script type="text/javascript">
-     /*Proses Update Upload Tugas*/
+     /*Proses Upload Upload Tugas*/
     $('#form_upload_update').on('submit', function(e) {
         e.preventDefault();
 
         Swal.fire({
             title: `Konfirmasi`,
-            text: `Update Tugas?`,
+            text: `Upload Tugas?`,
             icon: 'question',
             showCancelButton : true,
-            confirmButtonText : 'Update',
+            confirmButtonText : 'Upload',
             confirmButtonColor : '#696cff',
             cancelButtonText : 'Tidak',
             reverseButtons : true

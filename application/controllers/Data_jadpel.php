@@ -114,15 +114,15 @@ class Data_jadpel extends CI_Controller
 	{
 		$id_jadpel 		= $this->input->post('id_jadpel');
 
-		$kelas 			= $this->input->post('kelas');
-		$mapel 			= $this->input->post('mapel');
+		/*$kelas 			= $this->input->post('kelas');
+		$mapel 			= $this->input->post('mapel');*/
 		$hari 			= $this->input->post('hari');
 		$waktu_mulai 	= $this->input->post('waktu_mulai');
 		$waktu_selesai 	= $this->input->post('waktu_selesai');
 		$pengajar 		= $this->input->post('pengajar');
 
-		$data['jadpel_kelas']	= $kelas;
-		$data['jadpel_mapel']	= $mapel;
+		/*$data['jadpel_kelas']	= $kelas;
+		$data['jadpel_mapel']	= $mapel;*/
 		$data['hari']			= $hari;
 		$data['waktu_mulai']	= $waktu_mulai;
 		$data['waktu_selesai']	= $waktu_selesai;
@@ -137,15 +137,75 @@ class Data_jadpel extends CI_Controller
 	public function delete_data_jadpel()
 	{
 		if ($this->input->is_ajax_request() == true) {
-			$id_jadpel 	= $this->input->post('id',true);
-			$hapus 		= $this->bd->delete('data_jadpel','id_jadpel', $id_jadpel);
 
-			if($hapus){
-				$msg = [ 'sukses' => 'Data Jadwal Pelajaran Berhasil Dihapus'
-			];
+			$id_jadpel 	= $this->input->post('id',true);
+
+			/* Query */
+			$query_1 = $this->db->select('*')->from('data_materi')->where('id_jadpel_materi', $id_jadpel)->get();
+			$query_2 = $this->db->select('*')->from('data_tugas')->where('id_jadpel_tugas', $id_jadpel)->get();
+			$query_3 = $this->db->select('*')->from('data_absen')->where('id_jadpel_absen', $id_jadpel)->get();
+
+			if ($query_1->num_rows() > 0) {
+				$result_1 = $query_1->row();
+				$id_materi = $result_1->id_materi;
+
+				/*Delete File Materi*/
+				$query_materi = $this->db->get_where('data_materi', ['id_materi' => $id_materi])->row_array();
+				$old_file_materi = $query_materi['file_materi'];
+
+				if ($old_file_materi && file_exists(FCPATH . 'file/materi/' . $old_file_materi)) {
+					unlink(FCPATH . 'file/materi/' . $old_file_materi);
+				}
+
+				/*Delete Data Materi*/
+				$this->bd->delete('data_materi','id_materi', $id_materi);
+
+			} else {
+				$id_materi = null;
+			}
+
+			if ($query_2->num_rows() > 0) {
+				$result_2 = $query_2->row();
+				$id_tugas = $result_2->id_tugas;
+
+				/*Delete File Tugas*/
+				$query_tugas = $this->db->get_where('data_tugas', ['id_jadpel_tugas' => $id_jadpel])->row_array();
+				$old_file_tugas = $query_tugas['file_tugas'];
+
+				if ($old_file_tugas && file_exists(FCPATH . 'file/tugas/' . $old_file_tugas)) {
+					unlink(FCPATH . 'file/tugas/' . $old_file_tugas);
+				}
+
+				/*Delete Data Tugas*/
+				$this->bd->delete('data_tugas','id_tugas', $id_tugas);
+
+				/*Delete Data Tugas Selesai*/
+				$this->bd->delete('data_tugas_selesai','tugas', $id_tugas);
+
+			} else {
+				$id_tugas = null;
+			}
+
+			if ($query_3->num_rows() > 0) {
+				$result_3 = $query_3->row();
+				$id_absen = $result_3->id_absen;
+
+				/*Delete Data Absen*/
+				$this->bd->delete('data_absen','id_jadpel_absen', $id_jadpel);
+
+				/*Delete Data Absen Murid*/
+				$this->bd->delete('data_absen_murid','absen', $id_absen);
+
+			} else {
+				$id_absen = null;
+			}
+
+			/*Delete Data Jadpel*/
+			$this->bd->delete('data_jadpel','id_jadpel', $id_jadpel);
+
+			$msg = [ 'sukses' => 'Data Jadwal Pelajaran Berhasil Dihapus' ];
+			echo json_encode($msg);
 		}
-		echo json_encode($msg);
 	}
-}
 
 }

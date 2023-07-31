@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Jadwal_mengajar_model extends CI_Model
 {
 
-	public function table_jadwal_mengajar()
+	public function table_jadwal_mengajar($hari)
 	{
 		$id_staff = staffdata('id_staff');
 		$awal 	= $this->input->post('length');
@@ -44,13 +44,14 @@ class Jadwal_mengajar_model extends CI_Model
 		$this->db->join('data_hari','id_hari=hari');
 		$this->db->join('data_staff','id_staff=pengajar');
 		$this->db->where('pengajar', $id_staff);
+		$this->db->where('hari', $hari);
 		$this->db->order_by('id_jadpel', 'DESC');
 		$batas;
 		return $this->db->get()->result();
 		
 	}
 
-	public function filter_table_jadwal_mengajar()
+	public function filter_table_jadwal_mengajar($hari)
 	{
 		$id_staff = staffdata('id_staff');
 		$awal 	= $this->input->post('length');
@@ -84,12 +85,13 @@ class Jadwal_mengajar_model extends CI_Model
 		$this->db->join('data_hari','id_hari=hari');
 		$this->db->join('data_staff','id_staff=pengajar');
 		$this->db->where('pengajar', $id_staff);
+		$this->db->where('hari', $hari);
 		$this->db->order_by('id_jadpel', 'DESC');
 		return $this->db->get()->num_rows();
 
 	}
 
-	public function total_table_jadwal_mengajar()
+	public function total_table_jadwal_mengajar($hari)
 	{
 		$id_staff = staffdata('id_staff');
 		$sv = strtolower($_POST['search']['value']);
@@ -120,6 +122,7 @@ class Jadwal_mengajar_model extends CI_Model
 		$this->db->join('data_hari','id_hari=hari');
 		$this->db->join('data_staff','id_staff=pengajar');
 		$this->db->where('pengajar', $id_staff);
+		$this->db->where('hari', $hari);
 		$this->db->order_by('id_jadpel', 'DESC');
 		return $this->db->get()->num_rows();
 

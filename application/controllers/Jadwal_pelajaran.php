@@ -33,9 +33,11 @@ class Jadwal_pelajaran extends CI_Controller
 	/*Table Jadwal Pelajaran*/
 	public function table_jadwal_pelajaran()
 	{
-		$table 	= $this->jadwal_pelajaran->table_jadwal_pelajaran();
-		$filter = $this->jadwal_pelajaran->filter_table_jadwal_pelajaran();
-		$total 	= $this->jadwal_pelajaran->total_table_jadwal_pelajaran();
+		$hari		= $this->input->post('hari');
+
+		$table 	= $this->jadwal_pelajaran->table_jadwal_pelajaran($hari);
+		$filter = $this->jadwal_pelajaran->filter_table_jadwal_pelajaran($hari);
+		$total 	= $this->jadwal_pelajaran->total_table_jadwal_pelajaran($hari);
 
 		$data 	= [];
 
@@ -71,6 +73,7 @@ class Jadwal_pelajaran extends CI_Controller
 	/*View Materi*/
 	public function materi($id_jadpel)
 	{
+
 		/*Title*/
 		$pengaturan				= $this->db->select('*')->from('pengaturan')->get()->row();
 		$data['title']			= 'Materi '.$pengaturan->nama_sekolah;
@@ -79,12 +82,21 @@ class Jadwal_pelajaran extends CI_Controller
 		$where				= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel)->join('data_mapel','id_mapel=jadpel_mapel')->join('data_kelas','id_kelas=jadpel_kelas')->join('data_kejuruan','id_kejuruan=kejuruan')->join('data_hari','id_hari=hari')->get()->row();
 		$data['where'] 		= $where;
 
-		$this->load->view('template_siswa/header', $data);
-		$this->load->view('template_siswa/navbar');
-		$this->load->view('template_siswa/sidebar');
-		$this->load->view('siswa/materi/index');
-		$this->load->view('siswa/materi/modal');
-		$this->load->view('template_siswa/footer');
+		/*Require*/
+		$kelas = $where->jadpel_kelas;
+		$siswa = userdata('kelas');
+
+		if ($siswa == $kelas) {
+			$this->load->view('template_siswa/header', $data);
+			$this->load->view('template_siswa/navbar');
+			$this->load->view('template_siswa/sidebar');
+			$this->load->view('siswa/materi/index');
+			$this->load->view('siswa/materi/modal');
+			$this->load->view('template_siswa/footer');
+		} else {
+			redirect('dashboard');
+		}
+		
 	}
 
 	/*Table Materi*/
@@ -132,12 +144,20 @@ class Jadwal_pelajaran extends CI_Controller
 		$where				= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel)->join('data_mapel','id_mapel=jadpel_mapel')->join('data_kelas','id_kelas=jadpel_kelas')->join('data_kejuruan','id_kejuruan=kejuruan')->join('data_hari','id_hari=hari')->get()->row();
 		$data['where'] 		= $where;
 
-		$this->load->view('template_siswa/header', $data);
-		$this->load->view('template_siswa/navbar');
-		$this->load->view('template_siswa/sidebar');
-		$this->load->view('siswa/tugas/index');
-		$this->load->view('siswa/tugas/modal');
-		$this->load->view('template_siswa/footer');
+		/*Require*/
+		$kelas = $where->jadpel_kelas;
+		$siswa = userdata('kelas');
+
+		if ($siswa == $kelas) {
+			$this->load->view('template_siswa/header', $data);
+			$this->load->view('template_siswa/navbar');
+			$this->load->view('template_siswa/sidebar');
+			$this->load->view('siswa/tugas/index');
+			$this->load->view('siswa/tugas/modal');
+			$this->load->view('template_siswa/footer');
+		} else {
+			redirect('dashboard');
+		}
 	}
 
 	/*Table Tugas*/
@@ -223,10 +243,28 @@ class Jadwal_pelajaran extends CI_Controller
 	{
 		$id_tugas_selesai 				= $this->input->post('id_tugas_selesai');
 		$file_tugas_selesai				= $this->input->post('file_tugas_selesai');
-		$data['file_tugas_selesai']		= $file_tugas_selesai;
+		$status_tugas_selesai			= 'proses';
+		$tgl_tugas_selesai 				= date('Y-m-d H:i');
+
+		$query = $this->db->select('*')->from('data_tugas_selesai')->where('id_tugas_selesai', $id_tugas_selesai)->get()->row();
+
+		/*Cek Status Tugas Selesai*/
+		if($query->status_tugas_selesai == 'nonaktif') {
+			$data['file_tugas_selesai']		= $file_tugas_selesai;
+			$data['status_tugas_selesai']	= $status_tugas_selesai;
+			$data['tgl_tugas_selesai']		= $tgl_tugas_selesai;
+
+		} else if($query->status_tugas_selesai == 'nilai') {
+			$data['file_tugas_selesai']		= $file_tugas_selesai;
+
+			
+		} else {
+			$data['file_tugas_selesai']		= $file_tugas_selesai;
+		}
 
 		$update 			= $this->bd->update('data_tugas_selesai', $data, 'id_tugas_selesai', $id_tugas_selesai);
 		$output['status'] 	= true;
+		
 		$this->output->set_content_type('application/json')->set_output(json_encode($output));
 	}
 
@@ -241,12 +279,20 @@ class Jadwal_pelajaran extends CI_Controller
 		$where				= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel)->join('data_mapel','id_mapel=jadpel_mapel')->join('data_kelas','id_kelas=jadpel_kelas')->join('data_kejuruan','id_kejuruan=kejuruan')->join('data_hari','id_hari=hari')->get()->row();
 		$data['where'] 		= $where;
 
-		$this->load->view('template_siswa/header', $data);
-		$this->load->view('template_siswa/navbar');
-		$this->load->view('template_siswa/sidebar');
-		$this->load->view('siswa/absen/index');
-		$this->load->view('siswa/absen/modal');
-		$this->load->view('template_siswa/footer');
+		/*Require*/
+		$kelas = $where->jadpel_kelas;
+		$siswa = userdata('kelas');
+
+		if ($siswa == $kelas) {
+			$this->load->view('template_siswa/header', $data);
+			$this->load->view('template_siswa/navbar');
+			$this->load->view('template_siswa/sidebar');
+			$this->load->view('siswa/absen/index');
+			$this->load->view('siswa/absen/modal');
+			$this->load->view('template_siswa/footer');
+		} else {
+			redirect('dashboard');
+		}
 	}
 
 	/*Table Data Absen*/

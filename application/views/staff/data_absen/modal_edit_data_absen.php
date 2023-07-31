@@ -12,7 +12,7 @@
 
             <div class="col mb-1">
                 <label for="nameLarge" class="form-label">Tanggal Absen</label>
-                <input type="text" name="tgl_absen" class="form-control tanggal" value="<?= $edit->tgl_absen ?>"placeholder="Masukan Tanggal Absen" required>
+                <input type="text" name="tgl_absen" class="form-control" value="<?= $edit->tgl_absen ?>"placeholder="Masukan Tanggal Absen" required readonly>
             </div>
         </div>
 
