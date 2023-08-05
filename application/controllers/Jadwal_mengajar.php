@@ -719,7 +719,8 @@ public function proses_tambah_data_absen()
 {
 	$id_jadpel_absen 		= $this->input->post('id_jadpel_absen');
 	$judul_absen 			= $this->input->post('judul_absen');
-	$tgl_absen 				= $this->input->post('tgl_absen');
+	$tgl_absen 				= date('Y-m-d');
+	$waktu_absen 			= date('H:i');
 	$user_absen 			= staffdata('id_staff');
 
 	/*Generate id_absen*/
@@ -732,6 +733,7 @@ public function proses_tambah_data_absen()
 	$data['id_jadpel_absen']	= $id_jadpel_absen;
 	$data['judul_absen']		= $judul_absen;
 	$data['tgl_absen']			= $tgl_absen;
+	$data['waktu_absen']		= $waktu_absen;
 	$data['user_absen']			= $user_absen;
 
 	/*Query Data Mapel*/

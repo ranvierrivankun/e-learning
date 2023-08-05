@@ -1,6 +1,8 @@
 <form method="POST" id="form_edit" enctype="multipart/form-data">
 
  <input type="hidden" name="id_jadpel" value="<?= $edit->id_jadpel ?>">
+ <!-- <input type="hidden" name="jadpel_mapel" value="<?= $edit->jadpel_mapel ?>">
+ <input type="hidden" name="jadpel_kelas" value="<?= $edit->jadpel_kelas ?>"> -->
 
  <div class="modal-body">
 

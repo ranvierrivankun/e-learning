@@ -91,31 +91,34 @@ class Data_jadpel extends CI_Controller
 		$data['pengajar']		= $pengajar;
 		$data['absen']			= $absen;
 
-		$save = $this->bd->save('data_jadpel', $data);
-		$output['status'] 	= true;
-		$this->output->set_content_type('application/json')->set_output(json_encode($output));
-	}
+	/*	$datas['id_kelas_mapel']	= $kelas;
+	$update = $this->bd->update('data_mapel', $datas, 'id_mapel', $jadpel_mapel);*/
 
-	/*Modal Edit Data Jadpel*/
-	public function modal_edit_data_jadpel()
-	{
-		$id_jadpel 	= $this->input->post('id_jadpel');
-		$edit 		= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel)->join('data_mapel','id_mapel=jadpel_mapel')->join('data_kelas','id_kelas=jadpel_kelas')->join('data_kejuruan','id_kejuruan=kejuruan')->get()->row();
+	$save = $this->bd->save('data_jadpel', $data);
+	$output['status'] 	= true;
+	$this->output->set_content_type('application/json')->set_output(json_encode($output));
+}
 
-		$edit2		= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel)->join('data_hari','id_hari=hari')->join('data_staff','id_staff=pengajar')->get()->row();
+/*Modal Edit Data Jadpel*/
+public function modal_edit_data_jadpel()
+{
+	$id_jadpel 	= $this->input->post('id_jadpel');
+	$edit 		= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel)->join('data_mapel','id_mapel=jadpel_mapel')->join('data_kelas','id_kelas=jadpel_kelas')->join('data_kejuruan','id_kejuruan=kejuruan')->get()->row();
 
-		$data['edit'] 	= $edit;
-		$data['edit2'] 	= $edit2;
-		$this->load->view('staff/data_jadpel/modal_edit_data_jadpel', $data, FALSE);
-	}
+	$edit2		= $this->db->select('*')->from('data_jadpel')->where('id_jadpel', $id_jadpel)->join('data_hari','id_hari=hari')->join('data_staff','id_staff=pengajar')->get()->row();
 
-	/*Proses Edit Data Jadpel*/
-	public function proses_edit_data_jadpel()
-	{
-		$id_jadpel 		= $this->input->post('id_jadpel');
+	$data['edit'] 	= $edit;
+	$data['edit2'] 	= $edit2;
+	$this->load->view('staff/data_jadpel/modal_edit_data_jadpel', $data, FALSE);
+}
 
-		/*$kelas 			= $this->input->post('kelas');
-		$mapel 			= $this->input->post('mapel');*/
+/*Proses Edit Data Jadpel*/
+public function proses_edit_data_jadpel()
+{
+	$id_jadpel 		= $this->input->post('id_jadpel');
+
+		/*$jadpel_kelas 	= $this->input->post('jadpel_kelas');
+		$jadpel_mapel 	= $this->input->post('jadpel_mapel');*/
 		$hari 			= $this->input->post('hari');
 		$waktu_mulai 	= $this->input->post('waktu_mulai');
 		$waktu_selesai 	= $this->input->post('waktu_selesai');
@@ -127,6 +130,9 @@ class Data_jadpel extends CI_Controller
 		$data['waktu_mulai']	= $waktu_mulai;
 		$data['waktu_selesai']	= $waktu_selesai;
 		$data['pengajar']		= $pengajar;
+
+		/*$datas['id_kelas_mapel']	= $jadpel_kelas;
+		$update = $this->bd->update('data_mapel', $datas, 'id_mapel', $jadpel_mapel);*/
 
 		$update = $this->bd->update('data_jadpel', $data, 'id_jadpel', $id_jadpel);
 		$output['status'] 	= true;

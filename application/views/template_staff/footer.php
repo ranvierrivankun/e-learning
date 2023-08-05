@@ -48,3 +48,13 @@ $pengaturan = $this->db->select('*')->from('pengaturan')->get()->row();
 
 </body>
 </html>
+
+<script type="text/javascript">
+  $('.range').flatpickr({
+    altInput: true,
+    altFormat: "d/m/Y",
+    dateFormat: "Y/m/d",
+    disableMobile: "true",
+    mode: "range"
+  })
+</script>

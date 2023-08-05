@@ -102,4 +102,27 @@ class Select_model extends CI_Model
 		return $data;
 	}
 
+	public function mapel_laporan($searchTerm, $id_kelas)
+	{
+		if(staffdata('role') == '3') {
+			$id_staff = staffdata('id_staff');
+			$guru = $this->db->where('pengajar', $id_staff);
+		}
+
+		$this->db->select('*');
+		$this->db->from('data_mapel');
+		$this->db->join('data_jadpel', 'jadpel_mapel=id_mapel');
+		$this->db->where("nama_mapel like '%".$searchTerm."%' ");
+		$guru;
+		$this->db->where_in('jadpel_kelas', $id_kelas);
+		$this->db->order_by('nama_mapel', 'ASC');
+		$query = $this->db->get()->result_array();
+
+		$data = array();
+		foreach($query as $q){
+			$data[] = array("id"=>$q['id_mapel'], "text"=>$q['nama_mapel']);
+		}
+		return $data;
+	}
+
 }

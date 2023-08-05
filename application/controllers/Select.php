@@ -65,4 +65,14 @@ class Select extends CI_Controller
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 
+	/*Select Mapel Laporan*/
+	public function mapel_laporan()
+	{
+		$searchTerm 	= $this->input->post('searchTerm');
+		$id_kelas 		= $this->input->post('id_kelas');
+		$id_jadpel 		= $this->input->post('id_jadpel');
+		$response 		= $this->select->mapel_laporan($searchTerm, $id_kelas, $id_jadpel);
+		$this->output->set_content_type('application/json')->set_output(json_encode($response));
+	}
+
 }

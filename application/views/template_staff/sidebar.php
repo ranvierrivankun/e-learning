@@ -89,21 +89,65 @@ $pengaturan = $this->db->select('*')->from('pengaturan')->get()->row();
             </a>
           </li>
 
-          <!-- Guru -->
-        <?php } else if(staffdata('role') == '3') { ?>
-
-          <hr>
-
-          <li class="active">
-            <menu>Guru Menu</menu>
-          </li>
-
-          <li class="<?php if($this->uri->segment(1)=="Jadwal_mengajar"){echo "active";}?>">
-            <a href="<?= base_url('Jadwal_mengajar'); ?>">                        
-              <i class="fa-solid fa-swatchbook"></i>
-              <span class="ml-1">Jadwal Mengajar</span>
+          <li class="<?php if($this->uri->segment(1)=="Laporan"){echo "active";}?>">
+            <a href="<?= base_url('Laporan'); ?>">                        
+              <i class="fa-solid fa-file-excel"></i>
+              <span class="ml-1">Laporan E-Learning</span>
             </a>
           </li>
+
+          <!-- <li id="otherpage" class="
+          <?php 
+          if($this->uri->segment(1)=="Laporan_tugas") {
+            echo "active";
+          } else if ($this->uri->segment(1)=="Laporan_absen") {
+            echo "active";
+          }
+          ?>
+          ">
+          <a href="#auth" class="collapsed" data-toggle="collapse" aria-expanded="false">
+            <i class="fa-solid fa-file-excel"></i>
+            <span class="ml-1">Laporan</span>
+            <i class="las la-angle-right iq-arrow-right arrow-active"></i>
+            <i class="las la-angle-down iq-arrow-right arrow-hover"></i>
+          </a>
+          <ul id="auth" class="iq-submenu collapse" data-parent="#otherpage">
+            <li class="">
+              <a href="<?= base_url('Laporan_tugas'); ?>">
+                <i class="las la-minus"></i><span>Laporan Tugas</span>
+              </a>
+            </li>
+            <li class="">
+              <a href="<?= base_url('Laporan/absen'); ?>">
+                <i class="las la-minus"></i><span>Laporan Absen</span>
+              </a>
+            </li>
+          </ul>
+        </li> -->
+
+
+        <!-- Guru -->
+      <?php } else if(staffdata('role') == '3') { ?>
+
+        <hr>
+
+        <li class="active">
+          <menu>Guru Menu</menu>
+        </li>
+
+        <li class="<?php if($this->uri->segment(1)=="Jadwal_mengajar"){echo "active";}?>">
+          <a href="<?= base_url('Jadwal_mengajar'); ?>">                        
+            <i class="fa-solid fa-swatchbook"></i>
+            <span class="ml-1">Jadwal Mengajar</span>
+          </a>
+        </li>
+
+        <li class="<?php if($this->uri->segment(1)=="Laporan"){echo "active";}?>">
+          <a href="<?= base_url('Laporan'); ?>">                        
+            <i class="fa-solid fa-file-excel"></i>
+            <span class="ml-1">Laporan E-Learning</span>
+          </a>
+        </li>
 
           <!-- <li class="<?php if($this->uri->segment(1)=="data_siswa"){echo "active";}?>">
             <a href="<?= base_url('data_siswa'); ?>">                        

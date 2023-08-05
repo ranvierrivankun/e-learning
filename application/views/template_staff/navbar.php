@@ -8,8 +8,20 @@
 
         </a>
       </div>
+
+       <?php
+          $role = staffdata('role');
+          if ($role == '1') {
+            $headerText = 'SISTEM ADMIN E-LEARNING';
+          } elseif ($role == '2') {
+            $headerText = 'SISTEM STAF E-LEARNING';
+          } elseif ($role == '3') {
+            $headerText = 'SISTEM GURU E-LEARNING';
+          }
+          ?>
+          
       <div class="navbar-breadcrumb">
-        <h5>SISTEM STAFF E-LEARNING</h5>
+         <h5><?php echo $headerText; ?></h5>
       </div>
       <div class="d-flex align-items-center">
 

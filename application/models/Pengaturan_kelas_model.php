@@ -88,6 +88,10 @@ class Pengaturan_kelas_model extends CI_Model
 
 	public function table_data_kelas()
 	{
+		if(staffdata('role') == '3') {
+			$guru = $this->db->where('pengajar', staffdata('id_staff'));
+		}
+
 		$awal 	= $this->input->post('length');
 		$akhir 	= $this->input->post('start');
 
@@ -116,6 +120,8 @@ class Pengaturan_kelas_model extends CI_Model
 		$this->db->select('*');
 		$this->db->from('data_kelas');
 		$this->db->join('data_kejuruan', 'id_kejuruan=kejuruan');
+		$this->db->join('data_jadpel', 'jadpel_kelas=id_kelas','left');
+		$guru;
 		$this->db->order_by('kejuruan', 'DESC');
 		$batas;
 		return $this->db->get()->result();
@@ -146,6 +152,8 @@ class Pengaturan_kelas_model extends CI_Model
 		$this->db->select('*');
 		$this->db->from('data_kelas');
 		$this->db->join('data_kejuruan', 'id_kejuruan=kejuruan');
+		$this->db->join('data_jadpel', 'jadpel_kelas=id_kelas','left');
+		$guru;
 		$this->db->order_by('kejuruan', 'DESC');
 		return $this->db->get()->num_rows();
 
@@ -172,6 +180,8 @@ class Pengaturan_kelas_model extends CI_Model
 		$this->db->select('*');
 		$this->db->from('data_kelas');
 		$this->db->join('data_kejuruan', 'id_kejuruan=kejuruan');
+		$this->db->join('data_jadpel', 'jadpel_kelas=id_kelas','left');
+		$guru;
 		$this->db->order_by('kejuruan', 'DESC');
 		return $this->db->get()->num_rows();
 
