@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 31, 2023 at 11:19 PM
+-- Generation Time: Aug 05, 2023 at 09:58 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -32,6 +32,7 @@ CREATE TABLE `data_absen` (
   `id_jadpel_absen` int(11) NOT NULL,
   `judul_absen` int(11) NOT NULL,
   `tgl_absen` varchar(50) NOT NULL,
+  `waktu_absen` varchar(50) NOT NULL,
   `user_absen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -50,14 +51,6 @@ CREATE TABLE `data_absen_murid` (
   `waktu_absen_murid` varchar(50) NOT NULL,
   `status_absen_murid` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `data_absen_murid`
---
-
-INSERT INTO `data_absen_murid` (`id_absen_murid`, `absen`, `mapel_absen_murid`, `user_absen_murid`, `tgl_absen_murid`, `waktu_absen_murid`, `status_absen_murid`) VALUES
-(128, 3, 16, 1, '2023-08-01', '22:47', 'aktif'),
-(129, 3, 16, 3, '2023-08-01', '22:48', 'aktif');
 
 -- --------------------------------------------------------
 
@@ -99,13 +92,6 @@ CREATE TABLE `data_jadpel` (
   `pengajar` int(11) NOT NULL,
   `absen` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `data_jadpel`
---
-
-INSERT INTO `data_jadpel` (`id_jadpel`, `jadpel_mapel`, `jadpel_kelas`, `hari`, `waktu_mulai`, `waktu_selesai`, `pengajar`, `absen`) VALUES
-(61, 10, 6, 1, '06:30', '09:00', 3, 'nonaktif');
 
 -- --------------------------------------------------------
 
@@ -286,7 +272,7 @@ INSERT INTO `data_staff` (`id_staff`, `role`, `nik`, `password`, `nama_staff`, `
 (2, 2, '2', '$2y$10$2HhiRLw3m6VTeIcOMxPkPOxuSHYjkm5.pN9fbfraTXLJf/TKb7/Gu', 'Imam Abdul', 'aktif', 'Pria', 'staff.jpg', 'imamabdul@smkdiponegoro1.com', '081278659877', ''),
 (3, 3, '3', '$2y$10$TAAhHodBKzUxlxqeXp9UvOkuIi8J4vLTQYM/YQBOcIfbyZCEVuQ.i', 'Aisha Nadine', 'aktif', 'Wanita', '162183873-461130215079335-3870609655305769111-n-585dd1757c983fd9de5d9a98211831e9.jpg', 'aishanadine@smkdiponegoro1.com', '081287644322', ''),
 (6, 3, '4', '$2y$10$ZcuOX5T3MFn/R3ZANRLpfuQq115zkAjB7CZMBlRzN31ILMadmG6.K', 'Hamza Haikal', 'aktif', 'Pria', 'png-transparent-teacher-education-jesus-cartoon-angle-class-hand.png', 'hamzahaikal@smkdiponegoro1.com', '081285323412', ''),
-(7, 3, '5', '$2y$10$xm1NVhcHMZuVGdRPN7MgOO4wv7JlH5jTEXJTTFOgGE2bfut1w5JIi', 'Taufan Himawan', 'aktif', 'Pria', 'admin.png', 'taufanhimawan@smkdiponegoro1.com', '081273453344', '');
+(7, 3, '5', '$2y$10$xm1NVhcHMZuVGdRPN7MgOO4wv7JlH5jTEXJTTFOgGE2bfut1w5JIi', 'Taufan Himawan', 'aktif', 'Pria', 'WhatsApp_Image_2023-08-05_at_9_50_59_PM1.jpeg', 'taufanhimawan@smkdiponegoro1.com', '081273453344', '');
 
 -- --------------------------------------------------------
 
@@ -361,7 +347,8 @@ ALTER TABLE `data_absen`
 ALTER TABLE `data_absen_murid`
   ADD PRIMARY KEY (`id_absen_murid`),
   ADD KEY `absen` (`absen`),
-  ADD KEY `mapel_absen_murid` (`mapel_absen_murid`);
+  ADD KEY `mapel_absen_murid` (`mapel_absen_murid`),
+  ADD KEY `user_absen_murid` (`user_absen_murid`);
 
 --
 -- Indexes for table `data_hari`
@@ -457,7 +444,7 @@ ALTER TABLE `pengaturan`
 -- AUTO_INCREMENT for table `data_absen_murid`
 --
 ALTER TABLE `data_absen_murid`
-  MODIFY `id_absen_murid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+  MODIFY `id_absen_murid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=138;
 
 --
 -- AUTO_INCREMENT for table `data_hari`
@@ -469,7 +456,7 @@ ALTER TABLE `data_hari`
 -- AUTO_INCREMENT for table `data_jadpel`
 --
 ALTER TABLE `data_jadpel`
-  MODIFY `id_jadpel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id_jadpel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `data_kejuruan`
@@ -517,7 +504,7 @@ ALTER TABLE `data_staff`
 -- AUTO_INCREMENT for table `data_tugas_selesai`
 --
 ALTER TABLE `data_tugas_selesai`
-  MODIFY `id_tugas_selesai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_tugas_selesai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `pengaturan`
